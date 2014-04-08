@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Labo3</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btnJugar">Jugar</string>
+    <string name="btnInstrucciones">Instrucciones</string>
+    <string name="textInstrucciones">La mecánica del juego de Los Números Muertos es 
+        muy sencilla. El jugador 1 piensa un número con un
+		determinado número de dígitos y el jugador 2 tiene X 
+		intentos para intentar adivinarlo. \n\n Cada vez que el jugador 2 
+		dice un número, el jugador 1 le dirá cuántos números muertos y cuántos
+		heridos hay en la cifra que ha dado. Un número muerto es aquel 
+		dígito que está en la misma posición que en el número a adivinar. 
+		Un número herido es aquel dígito que aparece en el número a adivinar, 
+		pero está en una posición distinta.</string>
+    <string name="title_activity_selecciona_dificultad">Selecciona Dificultad</string>
+    <string name="jugar_nivel">Nivel:</string>
+    <string name="jugar_intentos_restantes">Intentos restantes:</string>
+
+</resources>
