@@ -39,7 +39,6 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
-		recentChats = (ListView) findViewById(R.id.recentChatsList);
 		mWindowManager =  (WindowManager) getSystemService(WINDOW_SERVICE);
 	    mDisplay = mWindowManager.getDefaultDisplay();
 		

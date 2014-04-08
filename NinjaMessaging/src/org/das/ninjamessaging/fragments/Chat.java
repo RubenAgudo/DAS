@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.R.id;
 import org.das.ninjamessaging.R.layout;
+import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.os.Build;
 
@@ -53,16 +56,23 @@ public class Chat extends ListFragment {
 	}
 
 	//atributtes
-	private ArrayAdapter<String> adaptador;
 	private IListFragmentListener listInterface;
 	private ArrayList<String> datos;
 	private ActionBar actionBar;
+	private SimpleAdapter adaptador;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		adaptador = loadData();
+		
+		String user = getActivity().getIntent().getStringExtra("opcionSeleccionada");
+		datos = new ArrayList<String>();
+		
+		
+		
 		setListAdapter(adaptador);
+		updateList(null);
+		
 	}
 	
 	@Override
@@ -80,25 +90,6 @@ public class Chat extends ListFragment {
 		return inflater.inflate(R.layout.fragment_recent_chats, container, false);
 	}
 	
-	/**
-	 * This methods loads the users from the BD
-	 * @return an ArrayAdapter containing all the users.
-	 */
-	private ArrayAdapter<String> loadData() {
-		
-		//para sustuir por LaBD
-		datos= new ArrayList<String>(100); 
-		
-		for(int x = 0; x < 100; x++) {
-			
-			datos.add("chat" + x); 
-		}
-		
-		ArrayAdapter<String> adaptador= new ArrayAdapter<String> (getActivity(),
-				android.R.layout.simple_list_item_1, datos);
-		return adaptador;
-	}
-	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -109,6 +100,28 @@ public class Chat extends ListFragment {
 			
 		} catch (ClassCastException e) {}
 	
+	}
+	
+	public void updateList(String user) {
+
+		ArrayAdapter<String> adaptador = new ArrayAdapter<String> (getActivity(),
+				android.R.layout.simple_expandable_list_item_2, datos);
+		
+		Cursor aCursor = LaBD.getMiBD(getActivity()).getMessagesWithUser(user);
+		int id;
+		String nombre;
+		
+		if(aCursor.moveToFirst()) {
+			
+			do {
+				
+				id = aCursor.getInt(0);
+				nombre = aCursor.getString(1);
+				adaptador.add(id + ", " + nombre);
+				
+			} while(aCursor.moveToNext());
+			
+		}
 	}
 	
 	//Generado por android
@@ -141,16 +154,8 @@ public class Chat extends ListFragment {
 			return rootView;
 		}
 	}
+	
+	
 
-	public void updateData(String stringExtra) {
-		//actionBar.setTitle(actionBar.getTitle() + " " + stringExtra);
-		Toast.makeText(getActivity(), stringExtra, Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		//actionBar = getActivity().getActionBar();
-	}
 
 }

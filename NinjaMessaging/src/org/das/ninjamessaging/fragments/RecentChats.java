@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.R.id;
 import org.das.ninjamessaging.R.layout;
+import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -52,15 +54,19 @@ public class RecentChats extends ListFragment {
 	}
 
 	//atributtes
-	private ArrayAdapter<String> adaptador;
 	private IListFragmentListener listInterface;
 	private ArrayList<String> datos;
+	private ArrayAdapter<String> adaptador;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		adaptador = loadData();
+
+		datos = new ArrayList<String>();
+		adaptador= new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, datos);
 		setListAdapter(adaptador);
+		updateList();
+		
 		
 	}
 	
@@ -79,21 +85,27 @@ public class RecentChats extends ListFragment {
 	
 	/**
 	 * This methods loads the users from the BD
+	 * @param string 
 	 * @return an ArrayAdapter containing all the users.
 	 */
-	private ArrayAdapter<String> loadData() {
+	private void updateList() {
 		
-		//para sustuir por LaBD
-		datos= new ArrayList<String>(100); 
+		adaptador.clear();
+		Cursor aCursor = LaBD.getMiBD(getActivity()).getRecentChats();
 		
-		for(int x = 0; x < 100; x++) {
+		String nombre;
+		
+		if(aCursor.moveToFirst()) {
 			
-			datos.add("opcion" + x); 
+			do {
+				
+				nombre = aCursor.getString(0);
+				datos.add(nombre);
+				
+			} while(aCursor.moveToNext());
+			
 		}
 		
-		ArrayAdapter<String> adaptador= new ArrayAdapter<String> (getActivity(),
-				android.R.layout.simple_list_item_1, datos);
-		return adaptador;
 	}
 	
 	@Override

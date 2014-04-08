@@ -21,8 +21,6 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 public class ChatActivity extends FragmentActivity implements IListFragmentListener {
-
-	private Chat chat;
 	
 	private ActionBar actionBar;
 	@Override
@@ -36,7 +34,8 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 		}
 		
 		actionBar = getActionBar();
-		actionBar.setTitle(actionBar.getTitle() + " " + getIntent().getStringExtra("opcionSeleccionada"));
+		actionBar.setTitle(getApplicationContext().getString(R.string.title_activity_chat) +
+				" " + getIntent().getStringExtra("opcionSeleccionada"));
 	}
 
 	@Override
