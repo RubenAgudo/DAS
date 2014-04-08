@@ -18,11 +18,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.os.Build;
 
 public class ChatActivity extends FragmentActivity implements IListFragmentListener {
 	
 	private ActionBar actionBar;
+	private Button enviar;
+	private String hablandoCon;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +36,10 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		
+		hablandoCon = getIntent().getStringExtra("opcionSeleccionada");
+		
+		enviar = (Button) findViewById(R.id.send);
 		
 		actionBar = getActionBar();
 		actionBar.setTitle(getApplicationContext().getString(R.string.title_activity_chat) +

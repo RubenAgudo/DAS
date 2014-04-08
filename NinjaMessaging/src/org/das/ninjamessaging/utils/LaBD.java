@@ -32,6 +32,7 @@ public class LaBD extends SQLiteOpenHelper{
 					+ "'SEQ' INTEGER NOT NULL  DEFAULT CURRENT_TIMESTAMP, "
 					+ "'Texto' TEXT, "
 					+ "'Fecha' DATETIME DEFAULT CURRENT_DATE, "
+					+ "'EnviadoPorMi' INTEGER NOT NULL, "
 					+ "PRIMARY KEY ('NombreUsuario', 'SEQ'))");
 		
 		//Creamos la tabla de usuarios
@@ -50,15 +51,17 @@ public class LaBD extends SQLiteOpenHelper{
 		db.execSQL("insert into 'ChatsRecientes' (Usuario) values ('Foo')" );
 		db.execSQL("insert into 'ChatsRecientes' (Usuario) values ('Bar')" );
 		
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto) values ('Foo', 'Hola')" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto, EnviadoPorMi) values ('Foo', 'Hola', 0)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto, EnviadoPorMi) values ('Foo', 'Que tal', 0)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto, EnviadoPorMi) values ('Foo', 'Bien', 1)" );
 		
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
-		db.execSQL("TRUNCATE TABLE 'Mensajes'");
-		db.execSQL("TRUNCATE TABLE 'Usuarios'");
-		db.execSQL("TRUNCATE TABLE 'ChatsRecientes'");
+		db.execSQL("DROP TABLE 'Mensajes'");
+		db.execSQL("DROP TABLE 'Usuarios'");
+		db.execSQL("DROP TABLE 'ChatsRecientes'");
 		
 	}
 	
@@ -70,7 +73,7 @@ public class LaBD extends SQLiteOpenHelper{
 	public Cursor getMessagesWithUser(String user) {
 		
 		return db.query("Mensajes", //tabla
-				new String[] {"NombreUsuario", "Texto"},  //columnas
+				new String[] {"NombreUsuario", "Texto","EnviadoPorMi"},  //columnas
 				"NombreUsuario=?"  , //where nombreusuario
 				new String[] {user}, //= user
 				null, //groupby
@@ -88,7 +91,7 @@ public class LaBD extends SQLiteOpenHelper{
 	public Cursor getMessagesWithUser(String user, int offset) {
 		
 		return db.query("Mensajes", //tabla
-				new String[] {"NombreUsuario", "Texto"},  //columnas
+				new String[] {"NombreUsuario", "Texto", "EnviadoPorMi"},  //columnas
 				"NombreUsuario=?"  , //where nombreusuario
 				new String[] {user}, //= user
 				null, //groupby

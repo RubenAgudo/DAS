@@ -58,8 +58,8 @@ public class Chat extends ListFragment {
 	//atributtes
 	private IListFragmentListener listInterface;
 	private ArrayList<String> datos;
-	private ActionBar actionBar;
-	private SimpleAdapter adaptador;
+	private ArrayAdapter<String> adaptador;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,11 +67,9 @@ public class Chat extends ListFragment {
 		
 		String user = getActivity().getIntent().getStringExtra("opcionSeleccionada");
 		datos = new ArrayList<String>();
-		
-		
-		
+		adaptador= new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, datos);
 		setListAdapter(adaptador);
-		updateList(null);
+		updateList(user);
 		
 	}
 	
@@ -105,19 +103,26 @@ public class Chat extends ListFragment {
 	public void updateList(String user) {
 
 		ArrayAdapter<String> adaptador = new ArrayAdapter<String> (getActivity(),
-				android.R.layout.simple_expandable_list_item_2, datos);
+				android.R.layout.simple_expandable_list_item_1, datos);
 		
 		Cursor aCursor = LaBD.getMiBD(getActivity()).getMessagesWithUser(user);
-		int id;
 		String nombre;
+		String texto;
+		int enviadoPorMi = 0; //0 = enviado por el otro, 1 = enviado por mi
 		
 		if(aCursor.moveToFirst()) {
 			
 			do {
 				
-				id = aCursor.getInt(0);
-				nombre = aCursor.getString(1);
-				adaptador.add(id + ", " + nombre);
+				nombre = aCursor.getString(0);
+				texto = aCursor.getString(1);
+				enviadoPorMi = aCursor.getInt(2);
+				if(enviadoPorMi == 0) {
+					adaptador.add(nombre + ": " + texto);
+				} else {
+					adaptador.add("Yo: " + texto);
+				}
+				
 				
 			} while(aCursor.moveToNext());
 			
