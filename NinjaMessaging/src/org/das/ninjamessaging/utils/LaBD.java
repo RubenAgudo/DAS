@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.EditText;
 
 public class LaBD extends SQLiteOpenHelper{
 
@@ -100,15 +101,19 @@ public class LaBD extends SQLiteOpenHelper{
 	}
 
 	public Cursor getRecentChats() {
-		String sql = "Select * from ChatsRecientes";
-		return db.rawQuery(sql, null);
-//		return db.query("ChatsRecientes", //tabla
-//				new String[] {"NombreUsuario"},  //columnas
-//				null  , //where nombreusuario
-//				null, //= user
-//				null, //groupby
-//				null, //having
-//				null); //orderby
+		return db.query("ChatsRecientes", //tabla
+				new String[] {"Usuario"},  //columnas
+				null  , //where nombreusuario
+				null, //= user
+				null, //groupby
+				null, //having
+				null); //orderby
+	}
+
+	public void anadirMensaje(String hablandoCon, String message, int enviadoPor) {
+		String sql = "INSERT INTO MENSAJES (NombreUsuario, Texto, EnviadoPorMi) Values(?, ?, ?)";
+		db.rawQuery(sql, new String[]{hablandoCon, message, enviadoPor+""});
+		
 	}
 	
 	

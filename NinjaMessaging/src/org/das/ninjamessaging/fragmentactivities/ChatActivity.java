@@ -1,31 +1,39 @@
 package org.das.ninjamessaging.fragmentactivities;
 
+import org.das.ninjamessaging.DetallesUsuario;
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.R.id;
 import org.das.ninjamessaging.R.layout;
 import org.das.ninjamessaging.R.menu;
 import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.Chat.IListFragmentListener;
+import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.os.Build;
 
 public class ChatActivity extends FragmentActivity implements IListFragmentListener {
 	
 	private ActionBar actionBar;
 	private Button enviar;
+	private EditText mensaje;
 	private String hablandoCon;
+	private Chat chat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +47,16 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 		
 		hablandoCon = getIntent().getStringExtra("opcionSeleccionada");
 		
-		enviar = (Button) findViewById(R.id.send);
-		
 		actionBar = getActionBar();
 		actionBar.setTitle(getApplicationContext().getString(R.string.title_activity_chat) +
 				" " + getIntent().getStringExtra("opcionSeleccionada"));
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.chat, menu);
+		getMenuInflater().inflate(R.menu.chat_activity, menu);
 		return true;
 	}
 
@@ -63,9 +69,21 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 		if (id == R.id.action_settings) {
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		
+		switch (id) {
+			case R.id.VerDetallesUsuario:
+				Intent i = new Intent(getApplicationContext(), DetallesUsuario.class);
+				i.putExtra("detallesDe", hablandoCon);
+				startActivity(i);
+				
+				break;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	
+		return true;
 	}
-
+	
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */

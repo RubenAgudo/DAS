@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -59,18 +61,19 @@ public class Chat extends ListFragment {
 	private IListFragmentListener listInterface;
 	private ArrayList<String> datos;
 	private ArrayAdapter<String> adaptador;
-	
+	private Button enviar;
+	private EditText mensaje;
+	private String hablandoCon;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		String user = getActivity().getIntent().getStringExtra("opcionSeleccionada");
+		hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
 		datos = new ArrayList<String>();
 		adaptador= new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, datos);
 		setListAdapter(adaptador);
-		updateList(user);
-		
+		updateList(hablandoCon);		
 	}
 	
 	@Override
@@ -80,7 +83,25 @@ public class Chat extends ListFragment {
 		listInterface.onItemSelected(datos.get(position));
 	}
 	
-	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+//		mensaje = (EditText) getView().findViewById(R.id.message);
+//		enviar = (Button) getView().findViewById(R.id.send);
+//		
+//		enviar.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				if(!mensaje.getText().equals("")) {
+//					LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, mensaje.getText().toString(), 1);
+//					updateList(hablandoCon);
+//				}
+//				
+//			}
+//		});
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -159,6 +180,8 @@ public class Chat extends ListFragment {
 			return rootView;
 		}
 	}
+
+	
 	
 	
 

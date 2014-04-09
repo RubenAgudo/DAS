@@ -29,11 +29,20 @@
         <activity
             android:name="org.das.ninjamessaging.fragmentactivities.ChatActivity"
             android:label="@string/title_activity_chat" >
-            <!-- <meta-data
+
+            <!--
+                 <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.das.ninjamessaging.MainActivity" /> -->
+                android:value="org.das.ninjamessaging.MainActivity" />
+            -->
         </activity>
-      
+        <activity
+            android:name="org.das.ninjamessaging.DetallesUsuario"
+            android:label="@string/title_activity_detalles_usuario" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.das.ninjamessaging.fragmentactivities.ChatActivity" />
+        </activity>
     </application>
 
 </manifest>

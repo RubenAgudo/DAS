@@ -7,5 +7,7 @@
     <string name="title_activity_contacts">Contacts</string>
     <string name="title_activity_chat">Chat</string>
     <string name="button_send">Enviar</string>
+    <string name="view_details_user">Ver detalles usuario</string>
+    <string name="title_activity_detalles_usuario">DetallesUsuario</string>
 
 </resources>
