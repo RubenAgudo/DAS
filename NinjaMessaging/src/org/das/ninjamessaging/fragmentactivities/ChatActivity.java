@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -29,11 +30,7 @@ import android.os.Build;
 
 public class ChatActivity extends FragmentActivity implements IListFragmentListener {
 	
-	private ActionBar actionBar;
-	private Button enviar;
-	private EditText mensaje;
-	private String hablandoCon;
-	private Chat chat;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +42,8 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
-		hablandoCon = getIntent().getStringExtra("opcionSeleccionada");
 		
-		actionBar = getActionBar();
-		actionBar.setTitle(getApplicationContext().getString(R.string.title_activity_chat) +
-				" " + getIntent().getStringExtra("opcionSeleccionada"));
+		
 	}
 	
 	@Override
@@ -73,7 +67,7 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 		switch (id) {
 			case R.id.VerDetallesUsuario:
 				Intent i = new Intent(getApplicationContext(), DetallesUsuario.class);
-				i.putExtra("detallesDe", hablandoCon);
+				//i.putExtra("detallesDe", hablandoCon);
 				startActivity(i);
 				
 				break;
@@ -89,6 +83,12 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
+		private ActionBar actionBar;
+		private Button enviar;
+		private EditText mensaje;
+		private String hablandoCon;
+		private Chat chat;
+		
 		public PlaceholderFragment() {
 		}
 
@@ -98,9 +98,33 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 			View rootView = inflater.inflate(R.layout.fragment_chat_activity, container,
 					false);
 			
+			hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
+			
+			actionBar = getActivity().getActionBar();
+			actionBar.setTitle(getActivity().getString(R.string.title_activity_chat) +
+					" " + getActivity().getIntent().getStringExtra("opcionSeleccionada"));
+
+			//chat = (Chat) getActivity().getFragmentManager().findFragmentById(R.id.chat);
+			
+			mensaje = (EditText) getView().findViewById(R.id.message);
+			enviar = (Button) getView().findViewById(R.id.send);
+			
+			enviar.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(!mensaje.getText().equals("")) {
+						LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, 
+								mensaje.getText().toString(), 1);
+						//updateList(hablandoCon);
+					}
+					
+				}
+			});
 			
 			return rootView;
 		}
+		
 	}
 
 	@Override

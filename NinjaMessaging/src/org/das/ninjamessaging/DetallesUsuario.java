@@ -30,8 +30,9 @@ public class DetallesUsuario extends Activity {
 		detallesDe = getIntent().getStringExtra("detallesDe");
 		TextView mensaje = (TextView) findViewById(R.id.id1);
 		//mensaje.setText(detallesDe);
-	}
 
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 

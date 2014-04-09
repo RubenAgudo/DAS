@@ -87,20 +87,7 @@ public class Chat extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-//		mensaje = (EditText) getView().findViewById(R.id.message);
-//		enviar = (Button) getView().findViewById(R.id.send);
-//		
-//		enviar.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				if(!mensaje.getText().equals("")) {
-//					LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, mensaje.getText().toString(), 1);
-//					updateList(hablandoCon);
-//				}
-//				
-//			}
-//		});
+
 	}
 
 	@Override

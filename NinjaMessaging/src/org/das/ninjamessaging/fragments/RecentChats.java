@@ -46,7 +46,7 @@ public class RecentChats extends ListFragment {
 	/**
 	 * Interface to communicate with all the FragmentActivity
 	 * using this ListFragment
-	 * @author Rubén
+	 * @author Rubï¿½n
 	 *
 	 */
 	public interface IListFragmentListener {

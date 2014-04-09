@@ -77,6 +77,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
+			
+			
 			return rootView;
 		}
 	}
