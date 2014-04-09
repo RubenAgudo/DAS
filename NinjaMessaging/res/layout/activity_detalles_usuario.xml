@@ -3,6 +3,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.das.ninjamessaging.DetallesUsuario"
+    tools:context="org.das.ninjamessaging.activities.DetallesUsuario"
     tools:ignore="MergeRootFrame" />
 

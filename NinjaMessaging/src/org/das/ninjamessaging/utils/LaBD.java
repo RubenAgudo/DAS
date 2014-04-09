@@ -1,5 +1,6 @@
 package org.das.ninjamessaging.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -111,8 +112,14 @@ public class LaBD extends SQLiteOpenHelper{
 	}
 
 	public void anadirMensaje(String hablandoCon, String message, int enviadoPor) {
-		String sql = "INSERT INTO MENSAJES (NombreUsuario, Texto, EnviadoPorMi) Values(?, ?, ?)";
-		db.rawQuery(sql, new String[]{hablandoCon, message, enviadoPor+""});
+		
+		ContentValues values = new ContentValues();
+		values.put("NombreUsuario", hablandoCon);
+		values.put("Texto", message);
+		values.put("EnviadoPorMi", enviadoPor);
+		db.insert("Mensajes", "NombreUsuario, Texto, EnviadoPorMi", values);
+		
+		
 		
 	}
 	

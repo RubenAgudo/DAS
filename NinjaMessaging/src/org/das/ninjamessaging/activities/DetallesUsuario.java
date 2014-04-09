@@ -1,4 +1,9 @@
-package org.das.ninjamessaging;
+package org.das.ninjamessaging.activities;
+
+import org.das.ninjamessaging.R;
+import org.das.ninjamessaging.R.id;
+import org.das.ninjamessaging.R.layout;
+import org.das.ninjamessaging.R.menu;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -15,7 +20,7 @@ import android.os.Build;
 
 public class DetallesUsuario extends Activity {
 
-	private String detallesDe;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +32,7 @@ public class DetallesUsuario extends Activity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
-		detallesDe = getIntent().getStringExtra("detallesDe");
-		TextView mensaje = (TextView) findViewById(R.id.id1);
-		//mensaje.setText(detallesDe);
+		
 
 	}
 	
@@ -58,6 +61,8 @@ public class DetallesUsuario extends Activity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
+		private String detallesDe;
+		
 		public PlaceholderFragment() {
 		}
 
@@ -66,6 +71,11 @@ public class DetallesUsuario extends Activity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_detalles_usuario, container, false);
+			
+			detallesDe = getActivity().getIntent().getStringExtra("detallesDe");
+			TextView mensaje = (TextView) rootView.findViewById(R.id.nombre);
+			mensaje.setText(detallesDe);
+			
 			return rootView;
 		}
 	}

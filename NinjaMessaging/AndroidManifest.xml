@@ -37,7 +37,7 @@
             -->
         </activity>
         <activity
-            android:name="org.das.ninjamessaging.DetallesUsuario"
+            android:name="org.das.ninjamessaging.activities.DetallesUsuario"
             android:label="@string/title_activity_detalles_usuario" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

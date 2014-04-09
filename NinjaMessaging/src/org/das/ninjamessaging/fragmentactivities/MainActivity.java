@@ -25,7 +25,6 @@ import android.os.Build;
 
 public class MainActivity extends FragmentActivity implements IListFragmentListener {
 
-	private ListView recentChats;
 	private WindowManager mWindowManager;
 	private Display mDisplay;
 	
@@ -61,7 +60,18 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		if (id == R.id.action_settings) {
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		
+		switch (id) {
+			case R.id.anadirChat:
+				
+				break;
+	
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+		
+		return true;
+		
 	}
 
 	/**

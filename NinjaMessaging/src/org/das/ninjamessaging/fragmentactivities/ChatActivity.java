@@ -1,10 +1,10 @@
 package org.das.ninjamessaging.fragmentactivities;
 
-import org.das.ninjamessaging.DetallesUsuario;
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.R.id;
 import org.das.ninjamessaging.R.layout;
 import org.das.ninjamessaging.R.menu;
+import org.das.ninjamessaging.activities.DetallesUsuario;
 import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.Chat.IListFragmentListener;
 import org.das.ninjamessaging.utils.LaBD;
@@ -67,7 +67,7 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 		switch (id) {
 			case R.id.VerDetallesUsuario:
 				Intent i = new Intent(getApplicationContext(), DetallesUsuario.class);
-				//i.putExtra("detallesDe", hablandoCon);
+				i.putExtra("detallesDe", getIntent().getStringExtra("opcionSeleccionada"));
 				startActivity(i);
 				
 				break;
@@ -103,11 +103,11 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 			actionBar = getActivity().getActionBar();
 			actionBar.setTitle(getActivity().getString(R.string.title_activity_chat) +
 					" " + getActivity().getIntent().getStringExtra("opcionSeleccionada"));
-
-			//chat = (Chat) getActivity().getFragmentManager().findFragmentById(R.id.chat);
 			
-			mensaje = (EditText) getView().findViewById(R.id.message);
-			enviar = (Button) getView().findViewById(R.id.send);
+			//chat = (Chat) rootView.getFragmentManager().findFragmentById(R.id.chat);
+			
+			mensaje = (EditText) rootView.findViewById(R.id.message);
+			enviar = (Button) rootView.findViewById(R.id.send);
 			
 			enviar.setOnClickListener(new View.OnClickListener() {
 				
@@ -116,6 +116,7 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 					if(!mensaje.getText().equals("")) {
 						LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, 
 								mensaje.getText().toString(), 1);
+						mensaje.setText("");
 						//updateList(hablandoCon);
 					}
 					
