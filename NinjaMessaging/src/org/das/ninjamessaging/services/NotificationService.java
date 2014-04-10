@@ -1,9 +1,19 @@
 package org.das.ninjamessaging.services;
 
+import org.das.ninjamessaging.R;
+import org.das.ninjamessaging.fragmentactivities.ChatActivity;
+import org.das.ninjamessaging.utils.LaBD;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
 public class NotificationService extends Service {
 	
@@ -17,6 +27,50 @@ public class NotificationService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		//runs without timer be reposting self
+		final Handler h2 = new Handler();
+		Runnable run = new Runnable() {
+
+			@Override
+	        public void run() {
+				
+				createNotification();
+
+				h2.postDelayed(this, 15000);
+			}
+
+			private void createNotification() {
+				
+				String[] datos = LaBD.getMiBD(getApplicationContext()).getRandomChat();
+				
+				Intent anIntent = new Intent(getApplicationContext(), ChatActivity.class);
+				anIntent.putExtra("opcionSeleccionada", datos[0]);
+				
+				PendingIntent intentEnNoti = PendingIntent.getActivity(getApplicationContext(), 0, anIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				
+				//opciones del intent
+				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+				configurarIntent(intentEnNoti, mBuilder, datos);
+
+				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				mNotificationManager.notify(1, mBuilder.build());
+				
+			}
+
+			private void configurarIntent(PendingIntent intentEnNoti,
+					NotificationCompat.Builder mBuilder, String[] datos) {
+				mBuilder.setSmallIcon(R.drawable.ic_launcher);
+				mBuilder.setLargeIcon(((BitmapDrawable)getResources().getDrawable(R.drawable.ic_launcher)).getBitmap());
+				mBuilder.setContentTitle(datos[0] + ": " + datos[1]);
+				mBuilder.setDefaults(Notification.DEFAULT_ALL);
+				mBuilder.setTicker("Tienes un nuevo mensaje");
+				mBuilder.setContentIntent(intentEnNoti);
+				mBuilder.setDefaults(Notification.FLAG_AUTO_CANCEL);
+			}
+		};
+		
+		run.run();
 				
 	}
 	
@@ -27,8 +81,7 @@ public class NotificationService extends Service {
 	}
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		
-		return START_NOT_STICKY;
+	public int onStartCommand(Intent intent, int flags, int startId) {	
+		return START_REDELIVER_INTENT;
 	}
 }

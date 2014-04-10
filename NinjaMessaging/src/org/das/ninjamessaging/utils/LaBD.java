@@ -1,5 +1,7 @@
 package org.das.ninjamessaging.utils;
 
+import java.util.Random;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +14,7 @@ public class LaBD extends SQLiteOpenHelper{
 
 	private static LaBD miLaBD;
 	private SQLiteDatabase db= getWritableDatabase();
+	private static final String[] DOGE_MESSAGES = {"Wow", "So message", "Such important", "Many notifications", "Y U do dis?"};
 	
 	private LaBD(Context context, String name, CursorFactory factory, int version)  {
 		super(context, name, factory, version);
@@ -153,6 +156,30 @@ public class LaBD extends SQLiteOpenHelper{
 	 */
 	public void exportarChat(String user) {
 		
+	}
+
+	/**
+	 * Coje un usuario al azar, coge un mensaje al azar de DOGE_MESSAGES
+	 * y lo inserta en la BD (mensaje recibido!) y devuelve el nombre del usuario
+	 * y el texto para mostrarlo en la notificacion
+	 * @return
+	 */
+	public String[] getRandomChat() {
+		Cursor aCursor = getUsers();
+		int rows = aCursor.getCount();
+		
+		Random rand = new Random();
+		int resultado = rand.nextInt(rows);
+		
+		aCursor.moveToPosition(resultado);
+		String nombre = aCursor.getString(resultado);
+		
+		int mensajeSeleccionado = rand.nextInt(DOGE_MESSAGES.length);
+		String mensaje = DOGE_MESSAGES[mensajeSeleccionado];
+		
+		anadirMensaje(nombre, mensaje, 0);
+		
+		return new String[] {nombre, mensaje};
 	}
 	
 	

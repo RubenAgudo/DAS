@@ -2,8 +2,8 @@ package org.das.ninjamessaging.fragmentactivities;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
-import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
+import org.das.ninjamessaging.services.NotificationService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,10 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		Intent i = new Intent(getApplicationContext(), NotificationService.class);
+		startService(i);
+		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();

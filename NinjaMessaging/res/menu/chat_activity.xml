@@ -7,6 +7,10 @@
         android:id="@+id/EnviarLocalizacion" 
         android:title="@string/enviar_localizacion"
         android:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_dialog_map"></item>
-
+        android:icon="@android:drawable/ic_menu_mylocation"></item>
+    <item
+        android:id="@+id/ExportarConversacion"
+        android:title="@string/exportar_conversacion"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_save"/>
 </menu>
