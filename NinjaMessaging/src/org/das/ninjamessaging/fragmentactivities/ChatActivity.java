@@ -1,36 +1,19 @@
 package org.das.ninjamessaging.fragmentactivities;
 
 import org.das.ninjamessaging.R;
-import org.das.ninjamessaging.R.id;
-import org.das.ninjamessaging.R.layout;
-import org.das.ninjamessaging.R.menu;
 import org.das.ninjamessaging.activities.DetallesUsuario;
-import org.das.ninjamessaging.fragments.Chat;
-import org.das.ninjamessaging.fragments.Chat.IListFragmentListener;
-import org.das.ninjamessaging.utils.LaBD;
-
-import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.FragmentManager;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.os.Build;
 
-public class ChatActivity extends FragmentActivity implements IListFragmentListener {
-	
-	
+public class ChatActivity extends FragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +24,7 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		
-		
-		
+
 	}
 	
 	@Override
@@ -84,10 +65,8 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 	public static class PlaceholderFragment extends Fragment {
 
 		private ActionBar actionBar;
-		private Button enviar;
-		private EditText mensaje;
 		private String hablandoCon;
-		private Chat chat;
+		
 		
 		public PlaceholderFragment() {
 		}
@@ -102,36 +81,10 @@ public class ChatActivity extends FragmentActivity implements IListFragmentListe
 			
 			actionBar = getActivity().getActionBar();
 			actionBar.setTitle(getActivity().getString(R.string.title_activity_chat) +
-					" " + getActivity().getIntent().getStringExtra("opcionSeleccionada"));
-			
-			//chat = (Chat) rootView.getFragmentManager().findFragmentById(R.id.chat);
-			
-			mensaje = (EditText) rootView.findViewById(R.id.message);
-			enviar = (Button) rootView.findViewById(R.id.send);
-			
-			enviar.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					if(!mensaje.getText().equals("")) {
-						LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, 
-								mensaje.getText().toString(), 1);
-						mensaje.setText("");
-						//updateList(hablandoCon);
-					}
-					
-				}
-			});
-			
+					" " + hablandoCon);
+
 			return rootView;
 		}
 		
 	}
-
-	@Override
-	public void onItemSelected(String item) {
-		
-		
-	}
-
 }

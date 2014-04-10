@@ -1,16 +1,13 @@
 package org.das.ninjamessaging.fragmentactivities;
 
 import org.das.ninjamessaging.R;
-import org.das.ninjamessaging.R.id;
-import org.das.ninjamessaging.R.layout;
-import org.das.ninjamessaging.R.menu;
+import org.das.ninjamessaging.activities.Contacts;
 import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -20,8 +17,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ListView;
-import android.os.Build;
 
 public class MainActivity extends FragmentActivity implements IListFragmentListener {
 
@@ -34,7 +29,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
+			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
@@ -63,7 +58,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		
 		switch (id) {
 			case R.id.anadirChat:
-				
+				Intent i = new Intent(getApplicationContext(), Contacts.class);
+				startActivity(i);
 				break;
 	
 			default:
@@ -99,8 +95,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		//si la pantalla esta en apaisado mostramos los dos fragments, si no, llamamos al otro fragment
 		if(mDisplay.getRotation() != Surface.ROTATION_0 &&
 				mDisplay.getRotation() != Surface.ROTATION_180) {
-//			Chat chatDetails = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
-//			chatDetails.updateData(item);
+//			Chat chatDetails = (Chat) getSupportFragmentManager().findFragmentById(R.id.landMessages);
+//			chatDetails.updateList(item);
 		} else {
 			Intent i = new Intent(MainActivity.this, ChatActivity.class);
 			i.putExtra("opcionSeleccionada", item);

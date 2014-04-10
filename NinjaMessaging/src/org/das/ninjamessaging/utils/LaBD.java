@@ -61,14 +61,14 @@ public class LaBD extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
-		db.execSQL("DROP TABLE 'Mensajes'");
-		db.execSQL("DROP TABLE 'Usuarios'");
-		db.execSQL("DROP TABLE 'ChatsRecientes'");
+		db.execSQL("DROP TABLE Mensajes");
+		db.execSQL("DROP TABLE Usuarios");
+		db.execSQL("DROP TABLE ChatsRecientes");
 		
 	}
 	
 	/**
-	 * Method that return all the messages of the given user
+	 * Metodo que devuelve todos los mensajes que tienes con un usuario
 	 * @param user
 	 * @return
 	 */
@@ -85,9 +85,9 @@ public class LaBD extends SQLiteOpenHelper{
 	
 
 	/**
-	 * Method that return the "offset" messages of the given user
-	 * @param user
-	 * @param offset how many messages you want
+	 * Metodo que devuelve los offset mensajes que tienes con un usuario
+	 * @param user el usuario
+	 * @param offset Cuantos mensajes quieres
 	 * @return
 	 */
 	public Cursor getMessagesWithUser(String user, int offset) {
@@ -98,9 +98,13 @@ public class LaBD extends SQLiteOpenHelper{
 				new String[] {user}, //= user
 				null, //groupby
 				null, //having
-				"SEQ desc"); //orderby
+				"SEQ desc LIMIT " + offset); //orderby
 	}
 
+	/**
+	 * Obtiene tus chats recientes
+	 * @return
+	 */
 	public Cursor getRecentChats() {
 		return db.query("ChatsRecientes", //tabla
 				new String[] {"Usuario"},  //columnas
@@ -111,6 +115,12 @@ public class LaBD extends SQLiteOpenHelper{
 				null); //orderby
 	}
 
+	/**
+	 * Añade un nuevo mensaje a la conversacion con cierto usuario
+	 * @param hablandoCon El usuario con el que estas hablando
+	 * @param message el mensaje
+	 * @param enviadoPor 1 = enviado por el movil, 0 = enviado por tu contacto
+	 */
 	public void anadirMensaje(String hablandoCon, String message, int enviadoPor) {
 		
 		ContentValues values = new ContentValues();
@@ -120,6 +130,28 @@ public class LaBD extends SQLiteOpenHelper{
 		db.insert("Mensajes", "NombreUsuario, Texto, EnviadoPorMi", values);
 		
 		
+		
+	}
+
+	/**
+	 * Obtiene todos tus contactos para poder iniciar una conversacion
+	 * @return un Cursor con todos tus usuarios ordenados alfabeticamente
+	 */
+	public Cursor getUsers() {
+		return db.query("Usuarios", 
+				new String[]{"NombreUsuario"}, 
+				null, 
+				null, 
+				null, 
+				null, 
+				"NombreUsuario ASC");
+	}
+	
+	/**
+	 * Exporta la conversacion con cierto usuario a la SD
+	 * @param user
+	 */
+	public void exportarChat(String user) {
 		
 	}
 	

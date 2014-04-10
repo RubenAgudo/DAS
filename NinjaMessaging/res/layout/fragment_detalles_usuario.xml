@@ -21,10 +21,10 @@
         android:id="@+id/apellidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBaseline="@+id/nombre"
+        android:layout_alignBottom="@+id/nombre"
         android:layout_marginLeft="22dp"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@+id/nombre"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

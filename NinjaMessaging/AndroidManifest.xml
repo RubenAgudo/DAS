@@ -33,7 +33,7 @@
             <!--
                  <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.das.ninjamessaging.MainActivity" />
+                android:value="org.das.ninjamessaging.MainActivity" />
             -->
         </activity>
         <activity
@@ -42,6 +42,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.das.ninjamessaging.fragmentactivities.ChatActivity" />
+        </activity>
+        <activity
+            android:name="org.das.ninjamessaging.activities.Contacts"
+            android:label="@string/title_activity_contacts" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.das.ninjamessaging.fragmentactivities.MainActivity" />
         </activity>
     </application>
 

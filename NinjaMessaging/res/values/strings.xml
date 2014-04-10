@@ -9,5 +9,6 @@
     <string name="button_send">Enviar</string>
     <string name="view_details_user">Ver detalles usuario</string>
     <string name="title_activity_detalles_usuario">DetallesUsuario</string>
+    <string name="enviar_localizacion">Enviar localizacion</string>
 
 </resources>

@@ -9,8 +9,31 @@
     android:orientation="vertical"
     tools:context="org.das.ninjamessaging.Chat$PlaceholderFragment" >
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine" >
+    
+            <requestFocus />
+        </EditText>
+        
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_send" />
+        
+    </LinearLayout>
+    
     <ListView
-        android:id="@id/android:list"
+        android:id="@+id/listMessages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></ListView>
     
