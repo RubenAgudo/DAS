@@ -1,5 +1,10 @@
 package org.das.ninjamessaging.utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Random;
 
 import android.content.ContentValues;
@@ -8,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.widget.EditText;
 
 public class LaBD extends SQLiteOpenHelper{
@@ -153,8 +159,38 @@ public class LaBD extends SQLiteOpenHelper{
 	/**
 	 * Exporta la conversacion con cierto usuario a la SD
 	 * @param user
+	 * @return 
 	 */
-	public void exportarChat(String user) {
+	public boolean exportarChat(String user) {
+		
+		File path = Environment.getExternalStorageDirectory();
+		File f = new File(path.getAbsolutePath(), "nombrefich.txt");
+		OutputStreamWriter fich;
+		try {
+			fich = new OutputStreamWriter( new FileOutputStream(f));
+			
+			Cursor aCursor = getMessagesWithUser(user);
+			
+			if(aCursor.moveToFirst()) {
+				do {
+					String hablandoCon = aCursor.getString(0);
+					String nombre = aCursor.getInt(2) == 1 ? "Yo" : hablandoCon;
+					String mensaje = aCursor.getString(1);
+					
+					fich.write(nombre + ": " + mensaje + "\n");
+					
+				} while(aCursor.moveToNext());
+			}
+			fich.close();
+			aCursor.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return true;
 		
 	}
 
@@ -178,7 +214,7 @@ public class LaBD extends SQLiteOpenHelper{
 		String mensaje = DOGE_MESSAGES[mensajeSeleccionado];
 		
 		anadirMensaje(nombre, mensaje, 0);
-		
+		aCursor.close();
 		return new String[] {nombre, mensaje};
 	}
 	

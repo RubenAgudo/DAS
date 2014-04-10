@@ -103,7 +103,7 @@ public class RecentChats extends ListFragment {
 				datos.add(nombre);
 				
 			} while(aCursor.moveToNext());
-			
+			aCursor.close();
 		}
 		
 	}

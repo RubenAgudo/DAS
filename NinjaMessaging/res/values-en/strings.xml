@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NinjaMessaging_EN</string>
+    <string name="hello_world">Hello world!_EN</string>
+    <string name="action_settings">Settings_EN</string>
+    <string name="title_activity_contacts">Contacts_EN</string>
+    <string name="title_activity_chat">Chat_EN</string>
+    <string name="button_send">Enviar_EN</string>
+    <string name="view_details_user">Ver detalles usuario_EN</string>
+    <string name="title_activity_detalles_usuario">Detalles Usuario_EN</string>
+    <string name="enviar_localizacion">Enviar localizacion_EN</string>
+    <string name="exportar_conversacion">Exportar chat_EN</string>
+
+</resources>

@@ -2,6 +2,8 @@ package org.das.ninjamessaging.fragmentactivities;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.DetallesUsuario;
+import org.das.ninjamessaging.utils.LaBD;
+
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
@@ -12,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class ChatActivity extends FragmentActivity {
+	
+	private String user;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +29,7 @@ public class ChatActivity extends FragmentActivity {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-
+		user = getIntent().getStringExtra("opcionSeleccionada");
 	}
 	
 	@Override
@@ -48,9 +53,13 @@ public class ChatActivity extends FragmentActivity {
 		switch (id) {
 			case R.id.VerDetallesUsuario:
 				Intent i = new Intent(getApplicationContext(), DetallesUsuario.class);
-				i.putExtra("detallesDe", getIntent().getStringExtra("opcionSeleccionada"));
+				i.putExtra("detallesDe", user);
 				startActivity(i);
-				
+				break;
+			case R.id.ExportarConversacion:
+				String mensaje = "Chat exportado correctamente";
+				LaBD.getMiBD(getApplicationContext()).exportarChat(user);
+				Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);

@@ -47,7 +47,7 @@ public class NotificationService extends Service {
 				Intent anIntent = new Intent(getApplicationContext(), ChatActivity.class);
 				anIntent.putExtra("opcionSeleccionada", datos[0]);
 				
-				PendingIntent intentEnNoti = PendingIntent.getActivity(getApplicationContext(), 0, anIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent intentEnNoti = PendingIntent.getActivity(getApplicationContext(), 0, anIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 				
 				//opciones del intent
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
@@ -63,10 +63,9 @@ public class NotificationService extends Service {
 				mBuilder.setSmallIcon(R.drawable.ic_launcher);
 				mBuilder.setLargeIcon(((BitmapDrawable)getResources().getDrawable(R.drawable.ic_launcher)).getBitmap());
 				mBuilder.setContentTitle(datos[0] + ": " + datos[1]);
-				mBuilder.setDefaults(Notification.DEFAULT_ALL);
+				//mBuilder.setDefaults(Notification.DEFAULT_ALL);
 				mBuilder.setTicker("Tienes un nuevo mensaje");
 				mBuilder.setContentIntent(intentEnNoti);
-				mBuilder.setDefaults(Notification.FLAG_AUTO_CANCEL);
 			}
 		};
 		

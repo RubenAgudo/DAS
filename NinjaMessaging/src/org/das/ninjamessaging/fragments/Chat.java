@@ -120,7 +120,7 @@ public class Chat extends Fragment {
 				
 				
 			} while(aCursor.moveToNext());
-			
+			aCursor.close();
 		}
 	}
 	

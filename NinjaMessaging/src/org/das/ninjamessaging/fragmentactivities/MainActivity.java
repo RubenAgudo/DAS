@@ -1,11 +1,15 @@
 package org.das.ninjamessaging.fragmentactivities;
 
+import java.util.Locale;
+
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 import org.das.ninjamessaging.services.NotificationService;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -64,6 +68,9 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 				Intent i = new Intent(getApplicationContext(), Contacts.class);
 				startActivity(i);
 				break;
+				
+			case R.id.cambiarIdioma:
+				restartInLocale(new Locale("en"));
 	
 			default:
 				return super.onOptionsItemSelected(item);
@@ -106,6 +113,16 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 			startActivity(i);
 		}
 		
+	}
+	
+	private void restartInLocale(Locale locale)
+	{
+	    Locale.setDefault(locale);
+	    Configuration config = new Configuration();
+	    config.locale = locale;
+	    Resources resources = getResources();
+	    resources.updateConfiguration(config, resources.getDisplayMetrics());
+	    recreate();
 	}
 
 }
