@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.widget.EditText;
 
 public class LaBD extends SQLiteOpenHelper{
 
@@ -164,7 +163,7 @@ public class LaBD extends SQLiteOpenHelper{
 	public boolean exportarChat(String user) {
 		
 		File path = Environment.getExternalStorageDirectory();
-		File f = new File(path.getAbsolutePath(), "nombrefich.txt");
+		File f = new File(path.getAbsolutePath(), user + "  " + System.currentTimeMillis());
 		OutputStreamWriter fich;
 		try {
 			fich = new OutputStreamWriter( new FileOutputStream(f));
@@ -186,7 +185,6 @@ public class LaBD extends SQLiteOpenHelper{
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
@@ -202,19 +200,25 @@ public class LaBD extends SQLiteOpenHelper{
 	 */
 	public String[] getRandomChat() {
 		Cursor aCursor = getUsers();
-		int rows = aCursor.getCount();
+		String nombre = null,
+				mensaje = null;
 		
-		Random rand = new Random();
-		int resultado = rand.nextInt(rows);
-		
-		aCursor.moveToPosition(resultado);
-		String nombre = aCursor.getString(resultado);
-		
-		int mensajeSeleccionado = rand.nextInt(DOGE_MESSAGES.length);
-		String mensaje = DOGE_MESSAGES[mensajeSeleccionado];
-		
-		anadirMensaje(nombre, mensaje, 0);
+		if(aCursor.moveToFirst()) {
+			int rows = aCursor.getCount();
+			
+			Random rand = new Random();
+			int resultado = rand.nextInt(rows);
+			
+			aCursor.moveToPosition(resultado);
+			nombre = aCursor.getString(0);
+			
+			int mensajeSeleccionado = rand.nextInt(DOGE_MESSAGES.length);
+			mensaje = DOGE_MESSAGES[mensajeSeleccionado];
+			
+			anadirMensaje(nombre, mensaje, 0);
+		}
 		aCursor.close();
+		
 		return new String[] {nombre, mensaje};
 	}
 	

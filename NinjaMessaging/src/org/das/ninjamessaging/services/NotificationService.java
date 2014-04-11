@@ -4,7 +4,6 @@ import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.fragmentactivities.ChatActivity;
 import org.das.ninjamessaging.utils.LaBD;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -20,7 +19,6 @@ public class NotificationService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -81,6 +79,6 @@ public class NotificationService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {	
-		return START_REDELIVER_INTENT;
+		return START_STICKY;
 	}
 }
