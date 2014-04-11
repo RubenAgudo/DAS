@@ -1,6 +1,8 @@
 package org.das.ninjamessaging.fragmentactivities;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.DetallesUsuario;
@@ -11,6 +13,8 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -76,11 +80,8 @@ public class ChatActivity extends FragmentActivity {
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
         List<String> providers = lm.getProviders(true);
 
-        /* Loop over the array backwards, and if you get an accurate location, then break out the loop*/
-        Location l = null;
+        String message = obtenerUltimasCoordenadas(lm, providers);
         
-        double[] gps = obtenerUltimasCoordenadas(lm, providers, l);
-        String message = "Latitud: " + gps[0] + " Longitud: " + gps[1];
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         LaBD.getMiBD(getApplicationContext()).anadirMensaje(user, message, 1);
         Chat chat = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
@@ -88,20 +89,47 @@ public class ChatActivity extends FragmentActivity {
 		
 	}
 
-	private double[] obtenerUltimasCoordenadas(LocationManager lm,
-			List<String> providers, Location l) {
+	private String obtenerUltimasCoordenadas(LocationManager lm,
+			List<String> providers) {
+		Location l = null;
 		for (int i=providers.size()-1; i>=0; i--) {
                 l = lm.getLastKnownLocation(providers.get(i));
                 if (l != null) break;
         }
         
-        double[] gps = new double[2];
+        String resultado = null;
         if (l != null) {
-                gps[0] = l.getLatitude();
-                gps[1] = l.getLongitude();
+            resultado = getAddressFromLocation(l);
         }
-		return gps;
+		return resultado;
 	}
+	
+	/**
+	 * Metodo que transforma una localizacion en una direccion.
+	 * 
+	 * Si no puede obtener la direccion, devuelve la latitud y longitud.
+	 * @param location
+	 * @return
+	 */
+	private String getAddressFromLocation(
+	        Location location) {
+	    
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());   
+        String result = null;
+        try {
+            List<Address> list = geocoder.getFromLocation(
+                    location.getLatitude(), location.getLongitude(), 1);
+            if (list != null && list.size() > 0) {
+                Address address = list.get(0);
+                // sending back first address line and locality
+                result = address.getAddressLine(0) + ", " + address.getLocality();
+            }
+        } catch (IOException e) {
+            result = "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude();
+        }
+        
+        return result;
+    }
 
 	private void exportarConversacion() {
 		String mensaje = "Chat exportado correctamente";
@@ -147,5 +175,7 @@ public class ChatActivity extends FragmentActivity {
 		}
 		
 	}
+	
+	
 
 }
