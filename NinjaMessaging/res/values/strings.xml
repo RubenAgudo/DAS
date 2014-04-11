@@ -11,5 +11,6 @@
     <string name="title_activity_detalles_usuario">Detalles Usuario</string>
     <string name="enviar_localizacion">Enviar localizacion</string>
     <string name="exportar_conversacion">Exportar chat</string>
+    <string name="not_defined">No definido</string>
 
 </resources>

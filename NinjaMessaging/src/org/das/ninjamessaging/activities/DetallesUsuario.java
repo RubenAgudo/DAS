@@ -1,22 +1,18 @@
 package org.das.ninjamessaging.activities;
 
 import org.das.ninjamessaging.R;
-import org.das.ninjamessaging.R.id;
-import org.das.ninjamessaging.R.layout;
-import org.das.ninjamessaging.R.menu;
+import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.os.Build;
 
 public class DetallesUsuario extends Activity {
 
@@ -62,6 +58,10 @@ public class DetallesUsuario extends Activity {
 	public static class PlaceholderFragment extends Fragment {
 
 		private String detallesDe;
+		private TextView usuario;
+		private TextView nombreReal;
+		private TextView apellido;
+		private TextView telefono;
 		
 		public PlaceholderFragment() {
 		}
@@ -72,11 +72,33 @@ public class DetallesUsuario extends Activity {
 			View rootView = inflater.inflate(
 					R.layout.fragment_detalles_usuario, container, false);
 			
-			detallesDe = getActivity().getIntent().getStringExtra("detallesDe");
-			TextView mensaje = (TextView) rootView.findViewById(R.id.nombre);
-			mensaje.setText(detallesDe);
+			enlazar(rootView);
+			rellenarVista();
+			
+			
 			
 			return rootView;
+		}
+
+		private void rellenarVista() {
+			Cursor aCursor = LaBD.getMiBD(getActivity()).getUserInfo(detallesDe);
+			
+			if(aCursor.moveToFirst()) {
+				usuario.setText(aCursor.getString(0));
+				nombreReal.setText(aCursor.getString(1));
+				apellido.setText(aCursor.getString(2));
+				telefono.setText(aCursor.getString(3));
+			}
+			aCursor.close();
+			
+		}
+
+		private void enlazar(View rootView) {
+			detallesDe = getActivity().getIntent().getStringExtra("detallesDe");
+			usuario = (TextView) rootView.findViewById(R.id.nombreUsuario);
+			nombreReal = (TextView) rootView.findViewById(R.id.nombreReal);
+			apellido = (TextView) rootView.findViewById(R.id.apellido);
+			telefono = (TextView) rootView.findViewById(R.id.telefono);
 		}
 	}
 

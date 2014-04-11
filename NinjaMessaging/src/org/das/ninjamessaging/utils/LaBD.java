@@ -222,5 +222,11 @@ public class LaBD extends SQLiteOpenHelper{
 		return new String[] {nombre, mensaje};
 	}
 	
+	public Cursor getUserInfo(String user) {
+		
+		return db.query("Usuarios", null, "NombreUsuario=?", new String[]{user}, null, null, null);
+		
+	}
+	
 	
 }
