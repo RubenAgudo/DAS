@@ -1,12 +1,18 @@
 package org.das.ninjamessaging.fragmentactivities;
 
+import java.util.List;
+
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.DetallesUsuario;
+import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -57,11 +63,44 @@ public class ChatActivity extends FragmentActivity {
 			case R.id.ExportarConversacion:
 				exportarConversacion();
 				break;
+			case R.id.EnviarLocalizacion:
+				enviarLocalizacion();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	
 		return true;
+	}
+
+	private void enviarLocalizacion() {
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
+        List<String> providers = lm.getProviders(true);
+
+        /* Loop over the array backwards, and if you get an accurate location, then break out the loop*/
+        Location l = null;
+        
+        double[] gps = obtenerUltimasCoordenadas(lm, providers, l);
+        String message = "Latitud: " + gps[0] + " Longitud: " + gps[1];
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        LaBD.getMiBD(getApplicationContext()).anadirMensaje(user, message, 1);
+        Chat chat = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
+        chat.updateList(user);
+		
+	}
+
+	private double[] obtenerUltimasCoordenadas(LocationManager lm,
+			List<String> providers, Location l) {
+		for (int i=providers.size()-1; i>=0; i--) {
+                l = lm.getLastKnownLocation(providers.get(i));
+                if (l != null) break;
+        }
+        
+        double[] gps = new double[2];
+        if (l != null) {
+                gps[0] = l.getLatitude();
+                gps[1] = l.getLongitude();
+        }
+		return gps;
 	}
 
 	private void exportarConversacion() {
@@ -108,4 +147,5 @@ public class ChatActivity extends FragmentActivity {
 		}
 		
 	}
+
 }
