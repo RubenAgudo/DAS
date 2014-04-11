@@ -42,18 +42,28 @@ public class NotificationService extends Service {
 				
 				String[] datos = LaBD.getMiBD(getApplicationContext()).getRandomChat();
 				
-				Intent anIntent = new Intent(getApplicationContext(), ChatActivity.class);
-				anIntent.putExtra("opcionSeleccionada", datos[0]);
+				PendingIntent intentEnNoti = createIntent(datos);
 				
-				PendingIntent intentEnNoti = PendingIntent.getActivity(getApplicationContext(), 0, anIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 				
 				//opciones del intent
 				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
 				configurarIntent(intentEnNoti, mBuilder, datos);
 
+				notify(mBuilder);
+				
+			}
+
+			private PendingIntent createIntent(String[] datos) {
+				Intent anIntent = new Intent(getApplicationContext(), ChatActivity.class);
+				anIntent.putExtra("opcionSeleccionada", datos[0]);
+				
+				PendingIntent intentEnNoti = PendingIntent.getActivity(getApplicationContext(), 0, anIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+				return intentEnNoti;
+			}
+
+			private void notify(NotificationCompat.Builder mBuilder) {
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.notify(1, mBuilder.build());
-				
 			}
 
 			private void configurarIntent(PendingIntent intentEnNoti,
@@ -64,6 +74,8 @@ public class NotificationService extends Service {
 				//mBuilder.setDefaults(Notification.DEFAULT_ALL);
 				mBuilder.setTicker("Tienes un nuevo mensaje");
 				mBuilder.setContentIntent(intentEnNoti);
+				mBuilder.setAutoCancel(true);
+				
 			}
 		};
 		

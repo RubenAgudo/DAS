@@ -52,20 +52,28 @@ public class ChatActivity extends FragmentActivity {
 		
 		switch (id) {
 			case R.id.VerDetallesUsuario:
-				Intent i = new Intent(getApplicationContext(), DetallesUsuario.class);
-				i.putExtra("detallesDe", user);
-				startActivity(i);
+				verDetallesDelUsuario();
 				break;
 			case R.id.ExportarConversacion:
-				String mensaje = "Chat exportado correctamente";
-				LaBD.getMiBD(getApplicationContext()).exportarChat(user);
-				Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+				exportarConversacion();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 	
 		return true;
+	}
+
+	private void exportarConversacion() {
+		String mensaje = "Chat exportado correctamente";
+		LaBD.getMiBD(getApplicationContext()).exportarChat(user);
+		Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+	}
+
+	private void verDetallesDelUsuario() {
+		Intent i = new Intent(getApplicationContext(), DetallesUsuario.class);
+		i.putExtra("detallesDe", user);
+		startActivity(i);
 	}
 	
 	/**
@@ -86,13 +94,17 @@ public class ChatActivity extends FragmentActivity {
 			View rootView = inflater.inflate(R.layout.fragment_chat_activity, container,
 					false);
 			
+			inicializarActionBar();
+
+			return rootView;
+		}
+
+		private void inicializarActionBar() {
 			hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
 			
 			actionBar = getActivity().getActionBar();
 			actionBar.setTitle(getActivity().getString(R.string.title_activity_chat) +
 					" " + hablandoCon);
-
-			return rootView;
 		}
 		
 	}

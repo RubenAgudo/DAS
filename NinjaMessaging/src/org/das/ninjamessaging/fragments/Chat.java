@@ -63,14 +63,18 @@ public class Chat extends Fragment {
 			Bundle savedInstanceState) {
 		View aView = inflater.inflate(R.layout.fragment_chat, container, false);
 		
+		configurarComponentes(aView);
+		
+		return aView;
+	}
+
+
+	private void configurarComponentes(View aView) {
 		String hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
 		datos = new ArrayList<String>();
 		adaptador= new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, datos);
 		
-		mensaje = (EditText) aView.findViewById(R.id.message);
-		enviar = (Button) aView.findViewById(R.id.send);
-		
-		listMessages = (ListView) aView.findViewById(R.id.listMessages);
+		enlazar(aView);
 		listMessages.setAdapter(adaptador);
 
 		
@@ -90,8 +94,14 @@ public class Chat extends Fragment {
 				
 			}
 		});
+	}
+
+
+	private void enlazar(View aView) {
+		mensaje = (EditText) aView.findViewById(R.id.message);
+		enviar = (Button) aView.findViewById(R.id.send);
 		
-		return aView;
+		listMessages = (ListView) aView.findViewById(R.id.listMessages);
 	}
 
 	/**

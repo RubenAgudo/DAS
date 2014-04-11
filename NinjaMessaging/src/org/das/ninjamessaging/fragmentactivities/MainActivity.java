@@ -40,9 +40,13 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
+		obtenerDatosDeLaPantalla();
+		
+	}
+
+	private void obtenerDatosDeLaPantalla() {
 		mWindowManager =  (WindowManager) getSystemService(WINDOW_SERVICE);
 	    mDisplay = mWindowManager.getDefaultDisplay();
-		
 	}
 
 	@Override
@@ -65,8 +69,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		
 		switch (id) {
 			case R.id.anadirChat:
-				Intent i = new Intent(getApplicationContext(), Contacts.class);
-				startActivity(i);
+				abrirContactos();
 				break;
 				
 			case R.id.cambiarIdioma:
@@ -78,6 +81,11 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		
 		return true;
 		
+	}
+
+	private void abrirContactos() {
+		Intent i = new Intent(getApplicationContext(), Contacts.class);
+		startActivity(i);
 	}
 
 	/**
