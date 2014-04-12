@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.widget.EditText;
 
 public class LaBD extends SQLiteOpenHelper{
 
@@ -225,6 +226,18 @@ public class LaBD extends SQLiteOpenHelper{
 	public Cursor getUserInfo(String user) {
 		
 		return db.query("Usuarios", null, "NombreUsuario=?", new String[]{user}, null, null, null);
+		
+	}
+
+	public void actualizarInfoUsuario(String detallesDe,
+			String nombreRealString, String apellidoString,
+			String telefonoString) {
+		ContentValues values = new ContentValues();
+		values.put("NombreReal", nombreRealString);
+		values.put("Apellido", apellidoString);
+		values.put("Telefono", telefonoString);
+		
+		db.update("Usuarios", values, "nombreUsuario=?", new String[]{detallesDe});
 		
 	}
 	

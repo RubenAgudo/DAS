@@ -12,5 +12,10 @@
     <string name="enviar_localizacion">Enviar localizacion</string>
     <string name="exportar_conversacion">Exportar chat</string>
     <string name="not_defined">No definido</string>
+    <string name="editar_usuario">Editar usuario</string>
+    <string name="titulo_telefono">Telefono:</string>
+    <string name="titulo_nombre_usuario">Usuario:</string>
+    <string name="titulo_nombre_real">Nombre:</string>
+    <string name="titulo_apellido">Apellido:</string>
 
 </resources>

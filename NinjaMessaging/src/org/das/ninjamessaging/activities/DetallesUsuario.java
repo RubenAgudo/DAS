@@ -4,7 +4,9 @@ import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class DetallesUsuario extends Activity {
-
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,41 @@ public class DetallesUsuario extends Activity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		
+		switch(id){
+		case R.id.editarUsuario:
+			editarUsuario(getIntent().getStringExtra("detallesDe"));
+		}
+		
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void editarUsuario(final String detallesDe) {
+		LayoutInflater inflater = getLayoutInflater();
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle("Editar datos de: " + detallesDe);
+		final View dialogView = inflater.inflate(R.layout.editar_usuario, null);
+		dialog.setView(dialogView);
+		dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				EditText nombreReal = (EditText) dialogView.findViewById(R.id.editTextNombreReal);
+				EditText apellido = (EditText) dialogView.findViewById(R.id.editTextApellido);
+				EditText telefono = (EditText) dialogView.findViewById(R.id.editTextTelefono);
+				
+				String nombreRealString = nombreReal.getText().toString();
+				String apellidoString = apellido.getText().toString();
+				String telefonoString = telefono.getText().toString();
+				
+				LaBD.getMiBD(getApplicationContext()).actualizarInfoUsuario(detallesDe, nombreRealString, apellidoString, telefonoString);
+				
+			}
+		});
+		dialog.setCancelable(true);
+		dialog.show();
+		
+		
 	}
 
 	/**

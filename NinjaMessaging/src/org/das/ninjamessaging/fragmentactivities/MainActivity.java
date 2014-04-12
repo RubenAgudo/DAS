@@ -32,8 +32,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Intent i = new Intent(getApplicationContext(), NotificationService.class);
-		startService(i);
+//		Intent i = new Intent(getApplicationContext(), NotificationService.class);
+//		startService(i);
 		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
