@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.widget.EditText;
 
 public class LaBD extends SQLiteOpenHelper{
 
@@ -125,7 +124,7 @@ public class LaBD extends SQLiteOpenHelper{
 	}
 
 	/**
-	 * Añade un nuevo mensaje a la conversacion con cierto usuario
+	 * Aï¿½ade un nuevo mensaje a la conversacion con cierto usuario
 	 * @param hablandoCon El usuario con el que estas hablando
 	 * @param message el mensaje
 	 * @param enviadoPor 1 = enviado por el movil, 0 = enviado por tu contacto

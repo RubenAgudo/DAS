@@ -78,6 +78,9 @@ public class ChatActivity extends FragmentActivity {
 
 	private void enviarLocalizacion() {
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
+		
+		encenderGPS(lm);
+		
         List<String> providers = lm.getProviders(true);
 
         String message = obtenerUltimasCoordenadas(lm, providers);
@@ -86,6 +89,14 @@ public class ChatActivity extends FragmentActivity {
         LaBD.getMiBD(getApplicationContext()).anadirMensaje(user, message, 1);
         Chat chat = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
         chat.updateList(user);
+		
+	}
+	
+	private void encenderGPS(LocationManager lm) {
+		if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			Intent i= new Intent (android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			startActivity(i);
+		} 
 		
 	}
 

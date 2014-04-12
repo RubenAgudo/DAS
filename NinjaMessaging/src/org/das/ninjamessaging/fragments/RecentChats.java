@@ -3,24 +3,19 @@ package org.das.ninjamessaging.fragments;
 import java.util.ArrayList;
 
 import org.das.ninjamessaging.R;
-import org.das.ninjamessaging.R.id;
-import org.das.ninjamessaging.R.layout;
 import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.os.Build;
 
 public class RecentChats extends ListFragment {
 
