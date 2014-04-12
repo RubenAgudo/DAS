@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
+import org.das.ninjamessaging.fragments.Preferencias;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 import org.das.ninjamessaging.services.NotificationService;
 
@@ -75,11 +76,19 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 			case R.id.cambiarIdioma:
 				restartInLocale(new Locale("en"));
 	
+			case R.id.preferencias:
+				abrirPreferencias();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 		
 		return true;
+		
+	}
+
+	private void abrirPreferencias() {
+		Intent i = new Intent(getApplicationContext(), Preferencias.class);
+		startActivity(i);
 		
 	}
 

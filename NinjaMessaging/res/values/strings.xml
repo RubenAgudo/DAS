@@ -17,5 +17,8 @@
     <string name="titulo_nombre_usuario">Usuario:</string>
     <string name="titulo_nombre_real">Nombre:</string>
     <string name="titulo_apellido">Apellido:</string>
+    <string name="preferencias_categoria_opciones">Opciones globales</string>
+    <string name="preferencias_usar_servicio">¿Deseas usar el servicio?</string>
+    <string name="summary_servicio">Dejalo marcado si quieres simular que te llegan mensajes</string>
 
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <PreferenceCategory 
+            android:title="@string/preferencias_categoria_opciones">
+            
+            <ListPreference >
+                
+            </ListPreference>
+            
+            <CheckBoxPreference 
+                android:title="@string/preferencias_usar_servicio"
+                android:key="usar_servicio"
+                android:summary="@string/summary_servicio"
+                />
+        </PreferenceCategory>
+        
+        
+    </PreferenceScreen>
