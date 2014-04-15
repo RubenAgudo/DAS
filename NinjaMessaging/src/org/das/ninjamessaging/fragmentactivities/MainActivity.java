@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
+import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.Preferencias;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 import org.das.ninjamessaging.services.NotificationService;
@@ -28,13 +29,14 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	private WindowManager mWindowManager;
 	private Display mDisplay;
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-//		Intent i = new Intent(getApplicationContext(), NotificationService.class);
-//		startService(i);
+		Intent i = new Intent(getApplicationContext(), NotificationService.class);
+		startService(i);
 		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
@@ -122,8 +124,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		//si la pantalla esta en apaisado mostramos los dos fragments, si no, llamamos al otro fragment
 		if(mDisplay.getRotation() != Surface.ROTATION_0 &&
 				mDisplay.getRotation() != Surface.ROTATION_180) {
-//			Chat chatDetails = (Chat) getSupportFragmentManager().findFragmentById(R.id.landMessages);
-//			chatDetails.updateList(item);
+			Chat chatDetails = (Chat) getSupportFragmentManager().findFragmentById(R.id.landMessages);
+			chatDetails.updateList(item);
 		} else {
 			Intent i = new Intent(MainActivity.this, ChatActivity.class);
 			i.putExtra("opcionSeleccionada", item);

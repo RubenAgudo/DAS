@@ -44,6 +44,7 @@ public class Chat extends Fragment {
 	private ListView listMessages;
 	private ArrayList<String> datos;
 	private ArrayAdapter<String> adaptador;
+	private String hablandoCon;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,22 +71,22 @@ public class Chat extends Fragment {
 
 
 	private void configurarComponentes(View aView) {
-		String hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
+		hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
 		datos = new ArrayList<String>();
 		adaptador= new ArrayAdapter<String> (getActivity(), android.R.layout.simple_list_item_1, datos);
 		
 		enlazar(aView);
 		listMessages.setAdapter(adaptador);
 
-		
-		updateList(hablandoCon);
+		if(hablandoCon != null) {
+			updateList(hablandoCon);
+		}
 		
 		enviar.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if(!mensaje.getText().equals("")) {
-					String hablandoCon = getActivity().getIntent().getStringExtra("opcionSeleccionada");
+				if(!mensaje.getText().equals("") && hablandoCon != null) {
 					LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, 
 							mensaje.getText().toString(), 1);
 					mensaje.setText("");
@@ -109,7 +110,7 @@ public class Chat extends Fragment {
 	 * @param user indica la persona con la que estamos chateando
 	 */
 	public void updateList(String user) {
-		
+		hablandoCon = user;
 		Cursor aCursor = LaBD.getMiBD(getActivity()).getMessagesWithUser(user);
 		String nombre;
 		String texto;

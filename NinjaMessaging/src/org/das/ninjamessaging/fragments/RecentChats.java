@@ -86,7 +86,7 @@ public class RecentChats extends ListFragment {
 	private void updateList() {
 		
 		adaptador.clear();
-		Cursor aCursor = LaBD.getMiBD(getActivity()).getRecentChats();
+		Cursor aCursor = LaBD.getMiBD(getActivity().getApplicationContext()).getRecentChats();
 		
 		String nombre;
 		

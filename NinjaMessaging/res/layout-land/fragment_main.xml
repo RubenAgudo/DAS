@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/landMessages"
-        android:name="org.das.ninjamessaging.fragmentactivities.Chat"
+        android:name="org.das.ninjamessaging.fragments.Chat"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_chat" />
