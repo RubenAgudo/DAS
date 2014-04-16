@@ -56,13 +56,18 @@ public class DetallesUsuario extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Metodo que crea un Alert Dialog con un layout personalizado, y que actualiza
+	 * el usuario con los valores que se hayan introducido los editText correspondientes
+	 * @param detallesDe
+	 */
 	private void editarUsuario(final String detallesDe) {
 		LayoutInflater inflater = getLayoutInflater();
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle("Editar datos de: " + detallesDe);
 		final View dialogView = inflater.inflate(R.layout.editar_usuario, null);
 		dialog.setView(dialogView);
-		dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+		dialog.setPositiveButton(getString(R.string.editar_usuario_aceptar), new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

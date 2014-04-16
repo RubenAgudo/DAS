@@ -20,5 +20,5 @@
     <string name="error_localizacion">No hay una última posición conocida.</string>
     <string name="chat_exportado">Chat exportado correctamente</string>
     <string name="error_chat">Seleccione una conversacion.</string>
-
+    <string name="editar_usuario_aceptar">Aceptar</string>
 </resources>

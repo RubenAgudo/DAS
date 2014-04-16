@@ -85,15 +85,15 @@ public class MainActivity extends Activity {
 			
 		};
 		
-//		providers = aManager.getAllProviders();
-		
-		//Iterator<String> itr = providers.iterator();
-		
+//		List<String> providers = aManager.getAllProviders();
+//		
+//		Iterator<String> itr = providers.iterator();
+//		
 //		Criteria loscriterios = setCriteriaForPositioning();
 //		String mejorproveedor= aManager.getBestProvider(loscriterios, true);
-		
-		//aTextView.append("Mejor proveedor: " + mejorproveedor + "\n\n");
-		
+//		
+//		aTextView.append("Mejor proveedor: " + mejorproveedor + "\n\n");
+//		
 //		while(itr.hasNext()) {
 //			LocationProvider aProvider = aManager.getProvider(itr.next());
 //			aTextView.append("Name: " + aProvider.getName() + "\n");
