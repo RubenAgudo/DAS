@@ -17,8 +17,8 @@
     <string name="titulo_nombre_usuario">Usuario:</string>
     <string name="titulo_nombre_real">Nombre:</string>
     <string name="titulo_apellido">Apellido:</string>
-    <string name="preferencias_categoria_opciones">Opciones globales</string>
-    <string name="preferencias_usar_servicio">¿Deseas usar el servicio?</string>
-    <string name="summary_servicio">Dejalo marcado si quieres simular que te llegan mensajes</string>
+    <string name="error_localizacion">No hay una última posición conocida.</string>
+    <string name="chat_exportado">Chat exportado correctamente</string>
+    <string name="error_chat">Seleccione una conversacion.</string>
 
 </resources>

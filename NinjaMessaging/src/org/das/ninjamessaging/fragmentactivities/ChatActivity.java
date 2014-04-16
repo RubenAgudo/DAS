@@ -76,37 +76,32 @@ public class ChatActivity extends FragmentActivity {
 	private void enviarLocalizacion() {
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
 		
-		encenderGPS(lm);
-		
         List<String> providers = lm.getProviders(true);
 
         String message = obtenerUltimasCoordenadas(lm, providers);
-        
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        LaBD.getMiBD(getApplicationContext()).anadirMensaje(user, message, 1);
-        Chat chat = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
-        chat.updateList(user);
-		
-	}
-	
-	private void encenderGPS(LocationManager lm) {
-		if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			Intent i= new Intent (android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-			startActivity(i);
-		} 
-		
+        if(message == null) {
+        	Toast.makeText(getApplicationContext(), getString(R.string.error_localizacion), Toast.LENGTH_SHORT).show();
+        } else {
+	        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+	        LaBD.getMiBD(getApplicationContext()).anadirMensaje(user, message, 1);
+	        Chat chat = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
+	        chat.updateList(user);
+        }
 	}
 
 	private String obtenerUltimasCoordenadas(LocationManager lm,
 			List<String> providers) {
 		Location l = null;
+		//ciclamos por todos los providers
 		for (int i=providers.size()-1; i>=0; i--) {
-                l = lm.getLastKnownLocation(providers.get(i));
-                if (l != null) break;
+            l = lm.getLastKnownLocation(providers.get(i));
+            //si uno tiene una localizacion salimos
+            if (l != null) break;
         }
         
         String resultado = null;
         if (l != null) {
+        	//obtenemos la direccion
             resultado = getAddressFromLocation(l);
         }
 		return resultado;
@@ -140,7 +135,7 @@ public class ChatActivity extends FragmentActivity {
     }
 
 	private void exportarConversacion() {
-		String mensaje = "Chat exportado correctamente";
+		String mensaje = getString(R.string.chat_exportado);
 		LaBD.getMiBD(getApplicationContext()).exportarChat(user);
 		Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
 	}

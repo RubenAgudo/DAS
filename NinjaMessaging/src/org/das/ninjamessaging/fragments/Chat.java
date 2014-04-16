@@ -87,13 +87,15 @@ public class Chat extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				if(!mensaje.getText().equals("") && hablandoCon != null) {
+				
+				//si hay texto, y si estoy hablando con alguien, envio el mensaje, si no, aviso.
+				if(mensaje.getText().length() != 0 && hablandoCon != null) {
 					LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, 
 							mensaje.getText().toString(), 1);
 					mensaje.setText("");
 					updateList(hablandoCon);
 				} else {
-					Toast.makeText(getActivity(), "Seleccione una conversacion", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.error_chat), Toast.LENGTH_SHORT).show();
 				}
 				
 			}
