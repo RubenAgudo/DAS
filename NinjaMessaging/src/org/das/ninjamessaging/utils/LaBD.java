@@ -18,17 +18,21 @@ import android.os.Environment;
 public class LaBD extends SQLiteOpenHelper{
 
 	private static LaBD miLaBD;
+	private long seq;
 	private SQLiteDatabase db= getWritableDatabase();
 	private static final String[] DOGE_MESSAGES = {"Wow", "So message", "Such important", "Many notifications", "Y U do dis?"};
 	
 	private LaBD(Context context, String name, CursorFactory factory, int version)  {
 		super(context, name, factory, version);
+		Cursor aCursor = db.rawQuery("Select Max(SEQ) from Mensajes", null);
+		if(aCursor.moveToFirst()) {
+			seq = aCursor.getLong(0);
+		}
 	}
 	
 	public static LaBD getMiBD(Context context) {
 		if(miLaBD == null) {
 			miLaBD = new LaBD(context, "NinjaMessenger", null, 2);
-			
 		}
 		
 		return miLaBD;
@@ -36,6 +40,7 @@ public class LaBD extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		seq = 0;
 		//creamos la tabla de mensajes
 		db.execSQL("CREATE TABLE 'Mensajes' "
 					+ "('NombreUsuario' TEXT NOT NULL , "
@@ -61,9 +66,9 @@ public class LaBD extends SQLiteOpenHelper{
 		db.execSQL("insert into 'ChatsRecientes' (Usuario) values ('Foo')" );
 		db.execSQL("insert into 'ChatsRecientes' (Usuario) values ('Bar')" );
 		
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + System.currentTimeMillis() + ", 'Hola', 0)" );
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + System.currentTimeMillis() + ", 'Que tal', 0)" );
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + System.currentTimeMillis() + ", 'Bien', 1)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + seq++ + ", 'Hola', 0)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + seq++ + ", 'Que tal', 0)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + seq++ + ", 'Bien', 1)" );
 		
 	}
 
@@ -135,7 +140,7 @@ public class LaBD extends SQLiteOpenHelper{
 		values.put("NombreUsuario", hablandoCon);
 		values.put("Texto", message);
 		values.put("EnviadoPorMi", enviadoPor);
-		values.put("SEQ", System.currentTimeMillis());
+		values.put("SEQ", seq++);
 		db.insert("Mensajes", "NombreUsuario, Texto, EnviadoPorMi, SEQ", values);
 		
 		
