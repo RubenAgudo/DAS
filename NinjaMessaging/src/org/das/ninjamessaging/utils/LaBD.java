@@ -39,7 +39,7 @@ public class LaBD extends SQLiteOpenHelper{
 		//creamos la tabla de mensajes
 		db.execSQL("CREATE TABLE 'Mensajes' "
 					+ "('NombreUsuario' TEXT NOT NULL , "
-					+ "'SEQ' INTEGER NOT NULL  DEFAULT CURRENT_TIMESTAMP, "
+					+ "'SEQ' INTEGER NOT NULL, "
 					+ "'Texto' TEXT, "
 					+ "'Fecha' DATETIME DEFAULT CURRENT_DATE, "
 					+ "'EnviadoPorMi' INTEGER NOT NULL, "
@@ -61,9 +61,9 @@ public class LaBD extends SQLiteOpenHelper{
 		db.execSQL("insert into 'ChatsRecientes' (Usuario) values ('Foo')" );
 		db.execSQL("insert into 'ChatsRecientes' (Usuario) values ('Bar')" );
 		
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto, EnviadoPorMi) values ('Foo', 'Hola', 0)" );
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto, EnviadoPorMi) values ('Foo', 'Que tal', 0)" );
-		db.execSQL("insert into 'Mensajes' (NombreUsuario, Texto, EnviadoPorMi) values ('Foo', 'Bien', 1)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + System.currentTimeMillis() + ", 'Hola', 0)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + System.currentTimeMillis() + ", 'Que tal', 0)" );
+		db.execSQL("insert into 'Mensajes' (NombreUsuario, SEQ, Texto, EnviadoPorMi) values ('Foo'," + System.currentTimeMillis() + ", 'Bien', 1)" );
 		
 	}
 
@@ -135,7 +135,8 @@ public class LaBD extends SQLiteOpenHelper{
 		values.put("NombreUsuario", hablandoCon);
 		values.put("Texto", message);
 		values.put("EnviadoPorMi", enviadoPor);
-		db.insert("Mensajes", "NombreUsuario, Texto, EnviadoPorMi", values);
+		values.put("SEQ", System.currentTimeMillis());
+		db.insert("Mensajes", "NombreUsuario, Texto, EnviadoPorMi, SEQ", values);
 		
 		
 		

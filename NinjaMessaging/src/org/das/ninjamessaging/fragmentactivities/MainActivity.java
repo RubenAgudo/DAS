@@ -1,17 +1,12 @@
 package org.das.ninjamessaging.fragmentactivities;
 
-import java.util.Locale;
-
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
 import org.das.ninjamessaging.fragments.Chat;
-import org.das.ninjamessaging.fragments.Preferencias;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 import org.das.ninjamessaging.services.NotificationService;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -43,6 +38,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
+		
 		obtenerDatosDeLaPantalla();
 		
 	}
@@ -66,31 +62,16 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
 		
 		switch (id) {
 			case R.id.anadirChat:
 				abrirContactos();
 				break;
-				
-			case R.id.cambiarIdioma:
-				restartInLocale(new Locale("en"));
-	
-			case R.id.preferencias:
-				abrirPreferencias();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 		
 		return true;
-		
-	}
-
-	private void abrirPreferencias() {
-		Intent i = new Intent(getApplicationContext(), Preferencias.class);
-		startActivity(i);
 		
 	}
 
@@ -132,16 +113,6 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 			startActivity(i);
 		}
 		
-	}
-	
-	private void restartInLocale(Locale locale)
-	{
-	    Locale.setDefault(locale);
-	    Configuration config = new Configuration();
-	    config.locale = locale;
-	    Resources resources = getResources();
-	    resources.updateConfiguration(config, resources.getDisplayMetrics());
-	    recreate();
 	}
 
 }

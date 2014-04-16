@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Chat extends Fragment {
 
@@ -91,6 +92,8 @@ public class Chat extends Fragment {
 							mensaje.getText().toString(), 1);
 					mensaje.setText("");
 					updateList(hablandoCon);
+				} else {
+					Toast.makeText(getActivity(), "Seleccione una conversacion", Toast.LENGTH_SHORT).show();
 				}
 				
 			}
@@ -111,7 +114,7 @@ public class Chat extends Fragment {
 	 */
 	public void updateList(String user) {
 		hablandoCon = user;
-		Cursor aCursor = LaBD.getMiBD(getActivity()).getMessagesWithUser(user);
+		Cursor aCursor = LaBD.getMiBD(getActivity().getApplicationContext()).getMessagesWithUser(user);
 		String nombre;
 		String texto;
 		int enviadoPorMi = 0; //0 = enviado por el otro, 1 = enviado por mi
@@ -143,10 +146,6 @@ public class Chat extends Fragment {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
 		return super.onOptionsItemSelected(item);
 	}
 

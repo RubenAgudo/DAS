@@ -8,15 +8,5 @@
         android:showAsAction="always"
         android:icon="@android:drawable/ic_input_add"  
         ></item>
-    <item
-        android:id="@+id/cambiarIdioma"
-        android:visible="true"
-        android:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_input_delete"></item>
-    <item
-        android:id="@+id/preferencias"
-        android:visible="true"
-        android:showAsAction="never"
-        />
 
 </menu>
