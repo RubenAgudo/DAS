@@ -21,8 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
-public class CumplePeticiones extends AsyncTask<Void, Void, Boolean> {
+public class CumplePeticiones extends AsyncTask<String, String, Boolean> {
 
 	private static CumplePeticiones myClass;
 	private ArrayList<NameValuePair> parametros;
@@ -40,29 +41,6 @@ public class CumplePeticiones extends AsyncTask<Void, Void, Boolean> {
 		HttpConnectionParams.setSoTimeout(httpParameters, 15000);
 		
 		httpClient = new DefaultHttpClient(httpParameters);
-		httpPost = new HttpPost("http://localhost/Labo9/login.php");
-		try {
-			httpPost.setEntity(new UrlEncodedFormEntity(parametros));
-			response = httpClient.execute(httpPost);
-			entity = response.getEntity();
-			
-			String result = EntityUtils.toString(entity);
-			JSONObject jsonObject = new JSONObject(result);
-			
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public static CumplePeticiones getCumplePeticiones() {
@@ -91,16 +69,42 @@ public class CumplePeticiones extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		parametros.clear();
 		parametros.add(new BasicNameValuePair("NombreABuscar", "test"));
+		
 	}
 
 	@Override
-	protected void onProgressUpdate(Void... values) {
+	protected void onProgressUpdate(String... values) {
 		super.onProgressUpdate(values);
 	}
 
 	@Override
-	protected Boolean doInBackground(Void... arg0) {
+	protected Boolean doInBackground(String... params) {
+
+		httpPost = new HttpPost("http://10.0.2.2/Labo9/login.php");
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(parametros));
+			response = httpClient.execute(httpPost);
+			entity = response.getEntity();
+			
+			String result = EntityUtils.toString(entity);
+			Log.i("hola", result);
+//			JSONObject jsonObject = new JSONObject(result);
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //catch (JSONException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		//}
 		return null;
 	}
 

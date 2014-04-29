@@ -1,5 +1,7 @@
 package org.das.labo9;
 
+import org.das.labo9.utils.CumplePeticiones;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -22,6 +24,7 @@ public class MainActivity extends Activity {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		CumplePeticiones.getCumplePeticiones().execute(new String[]{""} );
 	}
 
 	@Override
