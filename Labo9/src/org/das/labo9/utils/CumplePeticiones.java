@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class CumplePeticiones extends AsyncTask<String, String, Boolean> {
+public class CumplePeticiones extends AsyncTask<String, String, JSONObject> {
 
 	private static CumplePeticiones myClass;
 	private ArrayList<NameValuePair> parametros;
@@ -57,12 +57,12 @@ public class CumplePeticiones extends AsyncTask<String, String, Boolean> {
 	}
 
 	@Override
-	protected void onCancelled(Boolean result) {
+	protected void onCancelled(JSONObject result) {
 		super.onCancelled(result);
 	}
 
 	@Override
-	protected void onPostExecute(Boolean result) {
+	protected void onPostExecute(JSONObject result) {
 		super.onPostExecute(result);
 	}
 
@@ -80,7 +80,7 @@ public class CumplePeticiones extends AsyncTask<String, String, Boolean> {
 	}
 
 	@Override
-	protected Boolean doInBackground(String... params) {
+	protected JSONObject doInBackground(String... params) {
 
 		httpPost = new HttpPost("http://10.0.2.2/Labo9/login.php");
 		try {
