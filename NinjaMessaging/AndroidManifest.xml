@@ -65,6 +65,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.das.ninjamessaging.fragmentactivities.MainActivity" />
         </activity>
+        <activity android:name=".widgets.WidgetConfig">
+            <intent-filter>
+                <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <receiver android:name=".widgets.MiWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.das.ninjamessaging.widgets.ACTUALIZAR_WIDGET"/>
+            </intent-filter><meta-data android:name="android.appwidget.provider" android:resource="@xml/miwidget_wprovider"/>
+            
+        </receiver>
+        
+        
+        
     </application>
     
     

@@ -245,6 +245,22 @@ public class LaBD extends SQLiteOpenHelper{
 		db.update("Usuarios", values, "nombreUsuario=?", new String[]{detallesDe});
 		
 	}
+
+	public String[] getLastMessage(String user) {
+		Cursor aCursor = db.query("Mensajes", 
+				new String[]{"NombreUsuario, Texto"}, 
+				"NombreUsuario=?", 
+				new String[] {user}, 
+				null, 
+				null, 
+				"SEQ DESC");
+		if(aCursor.moveToFirst()) {
+			
+			return new String[] {aCursor.getString(0), aCursor.getString(1)};
+		} else {
+			return null;
+		}
+	}
 	
 	
 }
