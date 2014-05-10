@@ -1,6 +1,7 @@
 package org.das.ninjamessaging.services;
 
 import org.das.ninjamessaging.R;
+import org.das.ninjamessaging.activities.SettingsActivity;
 import org.das.ninjamessaging.fragmentactivities.ChatActivity;
 import org.das.ninjamessaging.utils.LaBD;
 
@@ -9,13 +10,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 public class NotificationService extends Service {
-	
+	private Runnable run;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -28,7 +31,7 @@ public class NotificationService extends Service {
 		
 		//runs without timer be reposting self
 		final Handler h2 = new Handler();
-		Runnable run = new Runnable() {
+		run = new Runnable() {
 
 			@Override
 	        public void run() {
@@ -79,6 +82,8 @@ public class NotificationService extends Service {
 			}
 		};
 		
+		
+
 		run.run();
 				
 	}
@@ -86,11 +91,12 @@ public class NotificationService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		run = null;
 		
 	}
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {	
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		return START_STICKY;
 	}
 }

@@ -27,4 +27,9 @@
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="actualizar">Actualizar</string>
+    <string name="pref_service">¿Usar servicio?</string>
+    <string name="pref_service_summ">Indica si quieres usar el servicio de notificaciones</string>
+    <string name="title_activity_settings">Preferencias</string>
+    <string name="pref">Preferencias</string>
+
 </resources>

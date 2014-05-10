@@ -3,31 +3,31 @@
     package="org.das.ninjamessaging"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.persmission.VIBRATE"/>
+    <uses-permission android:name="android.persmission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
-        <receiver android:name="org.das.ninjamessaging.services.SystemStartupReceiver">
-			<intent-filter>
-			     <action android:name="android.intent.action.BOOT_COMPLETED" />
-			</intent-filter>
-		</receiver>
-        
+        <receiver android:name="org.das.ninjamessaging.services.SystemStartupReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <service android:name="org.das.ninjamessaging.services.NotificationService" />
-        
+
         <activity
             android:name="org.das.ninjamessaging.fragmentactivities.MainActivity"
             android:label="@string/app_name" >
@@ -65,25 +65,29 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.das.ninjamessaging.fragmentactivities.MainActivity" />
         </activity>
-        <activity android:name=".widgets.WidgetConfig">
+        <activity android:name="org.das.ninjamessaging.widgets.WidgetConfig" >
             <intent-filter>
-                <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <receiver android:name=".widgets.MiWidget">
+
+        <receiver android:name="org.das.ninjamessaging.widgets.MiWidget" >
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.das.ninjamessaging.widgets.ACTUALIZAR_WIDGET"/>
-            </intent-filter><meta-data android:name="android.appwidget.provider" android:resource="@xml/miwidget_wprovider"/>
-            
+                <action android:name="org.das.ninjamessaging.widgets.ACTUALIZAR_WIDGET" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/miwidget_wprovider" />
         </receiver>
-        
-        
-        
+
+        <activity
+            android:name="org.das.ninjamessaging.activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
-    
-    
 
 </manifest>

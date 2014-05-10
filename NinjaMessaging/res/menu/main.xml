@@ -8,5 +8,11 @@
         android:showAsAction="always"
         android:icon="@android:drawable/ic_input_add"  
         ></item>
+    <item 
+        android:id="@+id/preferences"
+        android:visible="true"
+        android:showAsAction="never"
+        android:title="@string/pref"
+        />
 
 </menu>

@@ -2,12 +2,15 @@ package org.das.ninjamessaging.fragmentactivities;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
+import org.das.ninjamessaging.activities.SettingsActivity;
 import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 import org.das.ninjamessaging.services.NotificationService;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Display;
@@ -67,6 +70,9 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 			case R.id.anadirChat:
 				abrirContactos();
 				break;
+			case R.id.preferences:
+				Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+				startActivity(i);
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -114,5 +120,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		}
 		
 	}
+	
+	
 
 }
