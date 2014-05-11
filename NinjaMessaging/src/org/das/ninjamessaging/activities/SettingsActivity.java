@@ -40,18 +40,6 @@ public class SettingsActivity extends Activity {
 	    }
 
 		@Override
-		public PreferenceManager getPreferenceManager() {
-			// TODO Auto-generated method stub
-			return super.getPreferenceManager();
-		}
-
-		@Override
-		public PreferenceScreen getPreferenceScreen() {
-			// TODO Auto-generated method stub
-			return super.getPreferenceScreen();
-		}
-
-		@Override
 		public void onPause() {
 			// TODO Auto-generated method stub
 			super.onPause();

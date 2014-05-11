@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 
 	private WindowManager mWindowManager;
 	private Display mDisplay;
-	
+	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
