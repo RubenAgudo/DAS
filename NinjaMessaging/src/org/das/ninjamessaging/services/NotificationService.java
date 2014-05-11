@@ -19,7 +19,9 @@ import android.support.v4.app.NotificationCompat;
 
 public class NotificationService extends Service {
 	private Runnable run;
-
+	//runs without timer be reposting self
+	private final Handler h2 = new Handler();
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -29,8 +31,7 @@ public class NotificationService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		
-		//runs without timer be reposting self
-		final Handler h2 = new Handler();
+		
 		run = new Runnable() {
 
 			@Override
@@ -91,7 +92,7 @@ public class NotificationService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		run = null;
+		h2.removeCallbacks(run);
 		
 	}
 

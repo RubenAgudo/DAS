@@ -14,6 +14,7 @@ import android.preference.PreferenceScreen;
 
 public class SettingsActivity extends Activity {
 
+	public static final String PREF_SERVICE = "pref_service";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class SettingsActivity extends Activity {
 		@Override
 		public void onSharedPreferenceChanged(
 				SharedPreferences sharedPreferences, String key) {
-			if(key.equals("pref_service")) {
+			if(key.equals(PREF_SERVICE)) {
 				if(!sharedPreferences.getBoolean(key, true)) {
 					getActivity().getApplicationContext().stopService(new Intent(getActivity().getApplicationContext(), NotificationService.class));
 				} else {

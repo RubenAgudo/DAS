@@ -33,8 +33,14 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Intent i = new Intent(getApplicationContext(), NotificationService.class);
-		startService(i);
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean startService = sharedPref.getBoolean(SettingsActivity.PREF_SERVICE, true);
+		
+		if(startService) {
+			
+			Intent i = new Intent(getApplicationContext(), NotificationService.class);
+			startService(i);
+		}
 		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
