@@ -40,7 +40,7 @@ public class ConexionBD extends AsyncTask<String, String, JSONObject> {
 		super();
 		parametros = new ArrayList<NameValuePair>();
 		httpParameters = new BasicHttpParams();
-		httppost = new HttpPost("http://10.0.2.2/NinjaMessaging/ninjamessaging.php");
+		httppost = new HttpPost("http://galan.ehu.es/ragudo001/DAS/register.php");
 		httppost.setEntity(new UrlEncodedFormEntity(parametros));
 		httpclient = new DefaultHttpClient(httpParameters);
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
@@ -93,6 +93,11 @@ public class ConexionBD extends AsyncTask<String, String, JSONObject> {
 		JSONObject jo = new JSONObject();
 		
 			try {
+				parametros.clear();
+				parametros.add(new BasicNameValuePair("regid", params[0]));
+				parametros.add(new BasicNameValuePair("codigo", params[1]));
+				parametros.add(new BasicNameValuePair("telefono", params[2]));
+				
 				httppost.setEntity(new UrlEncodedFormEntity(parametros));
 				response = httpclient.execute(httppost);
 				entity = response.getEntity();
@@ -118,16 +123,10 @@ public class ConexionBD extends AsyncTask<String, String, JSONObject> {
 	
 	public void onPreExecute() {
 		super.onPreExecute();
-		parametros.clear();
-		parametros.add(new BasicNameValuePair("NombreABuscar", "0"));
 	}
 
 	public void registrar(String msg) {
-		parametros.clear();
-		parametros.add(new BasicNameValuePair("regid", msg));
-		parametros.add(new BasicNameValuePair("codigo", "0"));
-		
-		execute(msg, "0");
+		execute(msg, "1", "695708693");
 		
 		
 	}

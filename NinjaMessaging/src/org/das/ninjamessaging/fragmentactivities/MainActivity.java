@@ -38,8 +38,9 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	private WindowManager mWindowManager;
 	private Display mDisplay;
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-	private static final String SENDER_ID = "286996031694";
+	private static final String SENDER_ID = "951286565886";
 	private GoogleCloudMessaging gcm;
+	private static String REGID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		}
 		
 		if(checkPlayServices()) {
-			if(sharedPref.getString("REGID", "") == null) {
+			if((REGID = sharedPref.getString("REGID", null)) == null) {
 				Registrarse();
-				
 			}
 		}
 		
@@ -153,7 +153,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	}
 	
 	private boolean checkPlayServices() {
-		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		if (resultCode != ConnectionResult.SUCCESS) {
 			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 				//Dispositivo no configurado. Mostrar ventana de configuraciónde Google Play Services
@@ -175,7 +175,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 			protected String doInBackground(Void... params) {
 				String msg="";
 				try {
-					gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+					gcm = GoogleCloudMessaging.getInstance(getBaseContext());
 					//SENDER_ID es el número de proyecto que os ha asignado el Google Developer Console
 					String regid = gcm.register(SENDER_ID);
 					
@@ -184,6 +184,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 					sharedPref.edit()
 					.putString("REGID", regid)
 					.commit();
+					return regid;
 
 				} catch (IOException ex) {
 					msg = "Error :" + ex.getMessage();
@@ -199,7 +200,6 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 				try {
 					ConexionBD.getMiConexionBD(getApplicationContext()).registrar(msg);
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
