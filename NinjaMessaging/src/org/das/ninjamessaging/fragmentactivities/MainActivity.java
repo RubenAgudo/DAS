@@ -1,18 +1,29 @@
 package org.das.ninjamessaging.fragmentactivities;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
 import org.das.ninjamessaging.activities.SettingsActivity;
 import org.das.ninjamessaging.fragments.Chat;
 import org.das.ninjamessaging.fragments.RecentChats.IListFragmentListener;
 import org.das.ninjamessaging.services.NotificationService;
+import org.das.ninjamessaging.utils.ConexionBD;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +38,8 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	private WindowManager mWindowManager;
 	private Display mDisplay;
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	private static final String SENDER_ID = "286996031694";
+	private GoogleCloudMessaging gcm;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +50,6 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		boolean startService = sharedPref.getBoolean(SettingsActivity.PREF_SERVICE, true);
 		
 		if(startService) {
-			
 			Intent i = new Intent(getApplicationContext(), NotificationService.class);
 			startService(i);
 		}
@@ -47,9 +59,22 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
+		if(checkPlayServices()) {
+			if(sharedPref.getString("REGID", "") == null) {
+				Registrarse();
+				
+			}
+		}
+		
 		
 		obtenerDatosDeLaPantalla();
 		
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		checkPlayServices();
 	}
 
 	private void obtenerDatosDeLaPantalla() {
@@ -127,6 +152,59 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 		
 	}
 	
+	private boolean checkPlayServices() {
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+				//Dispositivo no configurado. Mostrar ventana de configuraciónde Google Play Services
+				//PLAY_SERVICES_RESOLUTION_REQUEST debe valer 9000
+				GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+			} else {
+				//Dispositivo no compatible. Terminar la aplicación
+				Log.i("Blabla", "This device is not supported.");
+				finish();
+			}
+			return false;
+		}
+		return true;
+	}
 	
+	private void Registrarse() {
+		new AsyncTask<Void, Void, String>() {
+			@Override
+			protected String doInBackground(Void... params) {
+				String msg="";
+				try {
+					gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+					//SENDER_ID es el número de proyecto que os ha asignado el Google Developer Console
+					String regid = gcm.register(SENDER_ID);
+					
+					SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+					
+					sharedPref.edit()
+					.putString("REGID", regid)
+					.commit();
 
+				} catch (IOException ex) {
+					msg = "Error :" + ex.getMessage();
+					// If there is an error, don't just keep trying to register.
+					// Require the user to click a button again, or perform
+					// exponential back-off.
+				}
+				return msg;
+			}
+			
+			@Override
+			protected void onPostExecute(String msg) {
+				try {
+					ConexionBD.getMiConexionBD(getApplicationContext()).registrar(msg);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}.execute(null, null, null);
+	}
+	
 }

@@ -121,4 +121,14 @@ public class ConexionBD extends AsyncTask<String, String, JSONObject> {
 		parametros.clear();
 		parametros.add(new BasicNameValuePair("NombreABuscar", "0"));
 	}
+
+	public void registrar(String msg) {
+		parametros.clear();
+		parametros.add(new BasicNameValuePair("regid", msg));
+		parametros.add(new BasicNameValuePair("codigo", "0"));
+		
+		execute(msg, "0");
+		
+		
+	}
 }

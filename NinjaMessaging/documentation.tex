@@ -1,0 +1,188 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+\setmainfont{Helvetica Neue}
+
+\setlength{\parindent}{15pt}
+
+\begin{document}
+\author{Rub\'{e}n Agudo Santos}
+\title{NinjaMessaging}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+En este proyecto individual se ha decidido realizar una aplicaci\'{o}n de 
+mensajer\'{i}a. Obviamente no permite ning\'{u}n tipo de mensajer\'{i}a real,
+solo la simulaci\'{o}n con dos usuarios predefinidos. Todo el c\'odigo fuente
+est\'a disponible en \url{https://github.com/RubenAgudo/DAS/tree/master/NinjaMessaging} 
+licenciado bajo licencia GPLv3.
+\end{abstract}
+
+\tableofcontents
+
+\section{Funcionalidades obligatorias}
+
+\subsection{Localizaci\'{o}n}
+Este c\'{o}digo est\'{a} contenido en la clase \emph{ChatActivity.java} y empieza cuando el
+usuario pincha sobre el icono de localizaci\'{o}n en el Action Bar. 
+
+Entonces se recoge el LocationManager y todos los providers. Nos da igual de donde
+provenga la \'{u}ltima localizaci\'{o}n, siempre que la haya.
+
+Entonces obtenemos la direcci\'{o}n f\'{i}sica, si tenemos conexi\'{o}n a internet,
+si no, nos devuelve la latitud y la longitud. Finalmente se guarda el mensaje y se
+refresca el ListFragment que contiene los mensajes de ese usuario.
+
+\subsection{Bases de datos SQLite}
+Para gestionar las bases de datos lo mejor es crear un gestor de bases de datos, 
+que en este caso ser\'{a} una MAE (M\'{a}quina abstracta de ejecuci\'{o}n) que solo
+tiene una \'{u}nica instancia. De este modo, todas las clases acceden a la misma instancia
+y realizan las operaciones necesarias.
+
+Se han creado los m\'{e}todos necesarios para obtener los mensajes de un usuario, todos
+los usuarios, los chats recientes, para a\~{n}adir un mensaje a la conversaci\'{o}n de un
+usuario.
+
+Tambi\'{e}n se han creado unas funciones ``miscelaneas´´ menos relacionadas con los propios
+chats y usuarios. Esas son las de exportar el chat de un usuario a la SD, obtener un mensaje
+al azar de un usuario bas\'{a}ndose en unos Strings predefinidos en la propia clase para 
+simular una conversaci\'{o}n y la posibilidad de actualizar la informaci\'{o}n de los 
+usuarios.
+
+Como curiosidad, decir que he utilizado los m\'etodos insert, update, select propios de
+Android, ya que al utilizar expresiones del tipo: 
+
+
+\begin{lstlisting}[language=java, numbers=left]
+db.update("Usuarios", values, "nombreUsuario=?", new String[]{detallesDe});
+\end{lstlisting}
+
+Evitamos que haya inyecciones SQL, es menos propenso a fallos que escribir una sentencia
+SQL pura con todas las comillas simples, dobles, concatenaciones de Strings etc. Y adem\'as,
+al ser algo propio de Android, est\'a considerado como un buen h\'abito de programaci\'on.
+
+\subsection{Notificaciones}
+Cada vez que abres la aplicaci\'on, cada 15 segundos (no configurables), la aplicaci\'on
+env\'ia una notificaci\'on con un mensaje. Cuando pinchas sobre la notificaci\'on, te
+lleva al chat de ese usuario, y la notificaci\'on desaparece.
+
+El c\'odigo puede consultarse en \emph{NotificationService.java}.
+
+\subsection{Fragments}
+Se han utilizado principalmente ListFragments, que muestran o bien los chats recientes, o 
+los propios mensajes.
+
+Si estamos en la ventana principal, y ponemos en horizontal el dispositivo, en la misma
+pantalla se mostrar\'an dos fragments: El que contiene la lista de chats recientes y el
+fragment del propio chat.
+
+Se ha controlado que si no hay ning\'un chat seleccionado, que muestre un aviso de que hay
+que seleccionar una conversaci\'on. 
+
+\subsection{Men\'{u}s y Action Bar}
+A lo largo de la aplicaci\'on, se utilizan en distintos sitios men\'us y acciones de la
+Action Bar.
+
+Por ejemplo, cuando estas en la vista de Chat en modo retrato, es decir, hablando con un
+usuario, tenemos distintas acciones y opciones.
+
+\begin{itemize}
+	\item \textbf{Action Bar, icono de localizaci\'on:} Como he descrito con anterioridad,
+	env\'ia la \'ultima posici\'on conocida transformada en direcci\'on f\'isica si se
+	dispone de conexi\'on a internet, si no la latitud y la longitud.
+	\item \textbf{Action Bar, icono de disquete:} Exporta la conversaci\'on actual a la SD, a un 
+	fichero de texto plano.
+	\item \textbf{Men\'u, Ver detalles de usuario:} Abre una nueva actividad donde se muestran
+	los datos de ese usuario.
+\end{itemize}
+
+Para consultar ese c\'odigo, esta disponible en el archivo \emph{ChatActivity.java} para ver
+las llamadas y como se tratan los clicks en el men\'u, y en \emph{/menu/chat\_activity.xml}
+para ver como est\'an hechos los men\'us.
+
+\subsection{Comentarios en el c\'odigo}
+Siguiendo los principios de clean code de Robert C. Martin no he puesto
+demasiados comentarios, solo los necesarios en lo que he considerado oportuno porque no 
+lo hemos dado en clase o porque el c\'odigo no podr\'ia entenderse todo lo bien que deber\'ia.
+
+Aun as\'i, pr\'acticamente todos los m\'etodos disponen de \emph{javadoc}, para poder
+consultar que hace cada funci\'on.
+
+\section{Funcionalidades extra}
+\subsection{Servicio}
+He creado un servicio que dispone de un \emph{Handler} y de un \emph{Runnable} para que
+cada 15 segundos cree una notificaci\'on.
+
+Para crear la notificaci\'on, obtiene de la Base de Datos un chat al azar, que devuelve un
+usuario y un texto de mensaje y posteriormente se notifica.
+
+El servicio tambi\'en se lanza cada vez que se lanza la aplicaci\'on, para que no sea
+necesario apagar y encender el m\'ovil. Esta opci\'on en un futuro ser\'a configurable.
+
+Lo que se hace en la notificaci\'on ha sido previamente explicado, en la secci\'on de 
+notificaciones.
+
+En c\'odigo relativo al servicio puede consultarse en \emph{NotificationService.java}.
+
+\subsection{Receiver}
+El Receiver, est\'a estrechamente relacionado con el servicio y con las notificaciones,
+ya que lo he creado para que al completar el arranque se lance el servicio que comienza las
+notificaciones cada 15 segundos.
+
+Para ello he creado el propio Receiver extendiendo de BroadCastReceiver y en el manifest.xml
+le he dado permisos para ejecutar cosas en el BOOT COMPLETED mediante el c\'odigo:
+
+\begin{lstlisting}[language=XML, numbers=left]
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+\end{lstlisting}
+
+\subsection{Internacionalizaci\'on y globalizaci\'on}
+Para la globalizaci\'on e internacionalizaci\'on, he decidido utilizar el m\'etodo
+recomendado por Android, que es replicar el fichero \emph{strings.xml} dentro de otras
+carpetas que contienen el c\'odigo de idioma correspondiente, es decir, 
+\emph{values-en, values-de} etc.
+
+De este modo, el sistema obtendr\'a el fichero adecuado para el idioma en el que est\'e el
+dispositivo. Tambi\'en es verdad que hay algunos idiomas que Android no soporta por defecto, y
+que ser\'ia preferible dar al usuario la opci\'on de forzar el idioma, pero eso ser\'a para
+futuras actualizaciones.
+
+\subsection{Uso de ficheros}
+la \'unica manera de dar sentido al uso de ficheros dentro de mi aplicaci\'on era dar
+al usuario la oportunidad de exportar los mensajes que ha mantenido con un usuario a la SD
+en texto plano.
+
+Esta funcionalidad est\'a disponible desde la pantalla de chat en el Action Bar, que tiene
+un icono de disquete.
+
+\subsection{GeoCoder}
+Como no ten\'ia mucho sentido utilizar un LocationListener para ``seguir´´ a un usuario
+lo que se me ocurri\'o, fue que utilizando la \'ultima posici\'on conocida del m\'ovil, 
+obtener la direcci\'on f\'isica.
+
+Para conseguir esto se necesitan dos cosas: Conexi\'on a internet y la clase GeoCoder de
+Android. Como el servicio al que consulta el GeoCoder no est\'a en el n\'ucleo de Android,
+requiere de conexi\'on a internet.
+
+Realmente lo que se hace es lo conocido como ``Reverse Geocoding´´. La precisi\'on de
+este sistema seg\'un los desarrolladores de Android es variable, ya que a veces puede darte
+una direcci\'on muy precisa, y otras veces simplemente la ciudad.
+
+El c\'odigo para el Reverse GeoCoding puede consultarse en \emph{ChatActivity.java}.
+
+\subsection{Alert Dialog con layout personalizado}
+Tambi\'en he implementado la posibilidad de actualizar los datos personales de los usuarios
+mediante un Alert Dialog con un layout personalizado.
+
+Para ello, he creado un layout, y cuando se pincha en el bot\'on del Action Bar dentro
+de la actividad DetallesUsuario.java, llama al m\'etodo editarUsuario, y ah\'i, se obtiene
+el LayoutInflater, se obtiene una View despu\'es de inflar el layout y solo se pone un bot\'on
+de aceptar.
+
+N\'otese que al pinchar no carga los datos actuales, ya que eso no est\'a programado, y ser\'ia
+l\'ogico que lo hiciera, pero eso se realizar\'a en futuras actualizaciones.
+\end{document}
