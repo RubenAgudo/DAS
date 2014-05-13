@@ -1,11 +1,18 @@
 package org.das.ninjamessaging.fragments;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.das.ninjamessaging.R;
+import org.das.ninjamessaging.fragmentactivities.MainActivity;
 import org.das.ninjamessaging.utils.LaBD;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,25 +27,6 @@ import android.widget.Toast;
 
 public class Chat extends Fragment {
 
-//	@Override
-//	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_contacts);
-//
-//		if (savedInstanceState == null) {
-//			getFragmentManager().beginTransaction()
-//					.add(R.id.container, new PlaceholderFragment()).commit();
-//		}
-//	}
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.contacts, menu);
-//		return true;
-//	}
-
 	//atributtes
 	private Button enviar;
 	private EditText mensaje;
@@ -46,10 +34,14 @@ public class Chat extends Fragment {
 	private ArrayList<String> datos;
 	private ArrayAdapter<String> adaptador;
 	private String hablandoCon;
+	private Context context;
+	static final String TAG = "NinjaMessaging";
+    private AtomicInteger msgId = new AtomicInteger();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
+		super.onCreate(savedInstanceState);
+		context = getActivity().getApplicationContext();
 	}
 	
 	
@@ -92,12 +84,47 @@ public class Chat extends Fragment {
 				if(mensaje.getText().length() != 0 && hablandoCon != null) {
 					LaBD.getMiBD(getActivity()).anadirMensaje(hablandoCon, 
 							mensaje.getText().toString(), 1);
-					mensaje.setText("");
+					
+					
+					sendToGCM();
+
+			        mensaje.setText("");
 					updateList(hablandoCon);
+					
 				} else {
 					Toast.makeText(getActivity(), getString(R.string.error_chat), Toast.LENGTH_SHORT).show();
 				}
 				
+			}
+
+			private void sendToGCM() {
+				new AsyncTask<String, Void, String>() {
+				    private GoogleCloudMessaging gcm;
+
+					@Override
+				    protected String doInBackground(String... params) {
+				    	gcm = GoogleCloudMessaging.getInstance(context);
+				        String msg = "";
+				        try {
+				        	
+				            Bundle data = new Bundle();
+				            data.putString("my_message", params[0]);
+				            data.putString("my_action", 
+				            		"com.google.android.gcm.demo.app.ECHO_NOW");
+				            String id = Integer.toString(msgId.incrementAndGet());
+				            gcm.send(MainActivity.SENDER_ID + "@gcm.googleapis.com", id, data);
+				            msg = "Sent message";
+				        } catch (IOException ex) {
+				            msg = "Error :" + ex.getMessage();
+				        }
+				        return msg;
+				    }
+
+				    @Override
+				    protected void onPostExecute(String msg) {
+				    	
+				    }
+				}.execute(mensaje.getText().toString(), null, null);
 			}
 		});
 	}
