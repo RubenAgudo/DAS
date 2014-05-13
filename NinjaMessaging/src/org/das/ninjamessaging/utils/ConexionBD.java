@@ -22,9 +22,10 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
-public class ConexionBD extends AsyncTask<String, String, JSONObject> {
+public class ConexionBD {
 	
 //ATRIBUTOS
 	private static ConexionBD miConexionBD;
@@ -54,80 +55,62 @@ public class ConexionBD extends AsyncTask<String, String, JSONObject> {
 		return miConexionBD;
 	}
 
-//METODOS
-	/*public String buscarLinea(String pValor) throws ClientProtocolException, IOException {
-		ArrayList<String> lista = new ArrayList<String>();
-		parametros.clear();
-		parametros.add(new BasicNameValuePair("NombreABuscar", pValor));
-		HttpResponse response = httpclient.execute(httppost);
-		HttpEntity entity = response.getEntity();
-		
-		String result = EntityUtils.toString(entity);
-		try {
-			JSONObject jsonObject = new JSONObject(result);
-			String nom = jsonObject.getString("Nombre");
-			lista.add(nom);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return result;	
-	}*/
-	
-	protected void onCancelled() {
-		// TODO Auto-generated method stub
-		super.onCancelled();
-	}
-
-	protected void onCancelled(Boolean result) {
-		// TODO Auto-generated method stub
-		super.onCancelled();
-	}
-
-	protected void onPostExecute(JSONObject result) {
-		// TODO Auto-generated method stub
-		super.onPostExecute(result);
-	}
-
-	@Override
-	protected JSONObject doInBackground(String... params) {
-		JSONObject jo = new JSONObject();
-		
-			try {
-				parametros.clear();
-				parametros.add(new BasicNameValuePair("regid", params[0]));
-				parametros.add(new BasicNameValuePair("codigo", params[1]));
-				parametros.add(new BasicNameValuePair("telefono", params[2]));
-				
-				httppost.setEntity(new UrlEncodedFormEntity(parametros));
-				response = httpclient.execute(httppost);
-				entity = response.getEntity();
-
-				String result = EntityUtils.toString(entity);
-				Log.i("hola", result);
-				jo = new JSONObject(result);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return jo;
-	}
-	
-	public void onPreExecute() {
-		super.onPreExecute();
-	}
-
 	public void registrar(String msg) {
-		execute(msg, "1", "695708693");
+		new AsyncTask<String, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(String... params) {
+				try {
+					parametros.clear();
+					parametros.add(new BasicNameValuePair("regid", params[0]));
+					parametros.add(new BasicNameValuePair("codigo", params[1]));
+					parametros.add(new BasicNameValuePair("telefono", params[2]));
+					
+					httppost.setEntity(new UrlEncodedFormEntity(parametros));
+					response = httpclient.execute(httppost);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
+		}.execute(msg, "1", "695708693");
 		
+	}
+
+	public void enviarMensaje(String data) {
 		
+		String mensaje = data;
+		
+		new AsyncTask<String, Void, Void>(){
+
+			@Override
+			protected Void doInBackground(String... params) {
+				
+				try {
+					parametros.clear();
+					parametros.add(new BasicNameValuePair("my_message", params[0]));
+					parametros.add(new BasicNameValuePair("codigo", params[1]));
+					httppost.setEntity(new UrlEncodedFormEntity(parametros));
+					response = httpclient.execute(httppost);
+					entity = response.getEntity();
+					String error = EntityUtils.toString(entity);
+					Log.e("Error", error);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				return null;
+			}
+			
+		}.execute(mensaje, "2");
 	}
 }

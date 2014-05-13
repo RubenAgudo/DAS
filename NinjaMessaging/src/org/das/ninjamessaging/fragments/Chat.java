@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.fragmentactivities.MainActivity;
+import org.das.ninjamessaging.utils.ConexionBD;
 import org.das.ninjamessaging.utils.LaBD;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -99,20 +100,15 @@ public class Chat extends Fragment {
 
 			private void sendToGCM() {
 				new AsyncTask<String, Void, String>() {
-				    private GoogleCloudMessaging gcm;
 
 					@Override
 				    protected String doInBackground(String... params) {
-				    	gcm = GoogleCloudMessaging.getInstance(context);
 				        String msg = "";
 				        try {
-				        	
-				            Bundle data = new Bundle();
-				            data.putString("my_message", params[0]);
-				            data.putString("my_action", 
-				            		"com.google.android.gcm.demo.app.ECHO_NOW");
-				            String id = Integer.toString(msgId.incrementAndGet());
-				            gcm.send(MainActivity.SENDER_ID + "@gcm.googleapis.com", id, data);
+				            
+				        	ConexionBD.getMiConexionBD(getActivity().getApplicationContext())
+				            .enviarMensaje(params[0]);
+				            
 				            msg = "Sent message";
 				        } catch (IOException ex) {
 				            msg = "Error :" + ex.getMessage();

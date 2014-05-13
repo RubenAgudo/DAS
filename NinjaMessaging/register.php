@@ -1,33 +1,30 @@
 <?php
 
-$telefono = $_POST['telefono'];
 $operacion =$_POST['codigo'];
-
-
-
-peticionCurl();
 
 switch($operacion) {
 case 0:
-    echo checkIfExistsRegistration($telefono);
+    echo checkIfExistsRegistration($_POST['telefono']);
     break;
 case 1:
-    addRegistration($telefono, $_POST['regid']);
+    $telefono = $_POST['telefono'];
+    $regid = $_POST['regid'];
+    addRegistration($telefono, $regid);
     break;
 case 2:
     $cabecera = array(
-        'Authorization: key-AIzaSyDfgT87fvHf9E2Ad_wQsLEmjEkdafiHPvY',
+        'Authorization: key=AIzaSyDfgT87fvHf9E2Ad_wQsLEmjEkdafiHPvY',
         'Content-type: Application/json');
     #llamamos siempre al mismo registration id, para ver que funciona
     $info = array(
-        'registration_ids' => array('APA91bFZ2zMMWJKfe0trb7boeRBv3N52gJffEpaeh6sus_W1pioJk2ju0RNcJK7xMfwuQD4dO8LUSjTJDLflPq2anprbykMX4VDmk5FvoCgSyO4SOAduydCG2voeXf7IeG1vElJ6k8JjUKdLPCJey2jD5cBMgreO1A'),
-        'data' => 'mensaje de prueba');
-    peticionCurl($info);
+        'registration_ids' => array('APA91bFn8if7-ixbf4fKDuP7LcGIMciE_0wvQUV3K00VbJQcjE1dhFD_H2_2o95e-axVk0pHUT0tV-ikh2JKcd8GqeX2OAgVJAjfCATFeQjAOnMRw4nGLSK0H9Rw9tiZbG0Xt05_8_TZ4vgnzBcIrbplDPA5HnIEBg'),
+        'data' => array('mensaje' => 'hola')); 
+    peticionCurl($info, $cabecera);
     break;
  
 }
 
-function peticionCurl($info) {
+function peticionCurl($info, $cabecera) {
     $ch = curl_init(); #inicializar el handler de curl
 
     #indicar el destino de la peticion, el servicio GCM de google
@@ -43,7 +40,7 @@ function peticionCurl($info) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($info));
 
     #ejecutar la llamada
-    $resultado = curl_exec($ch);
+    echo $resultado = curl_exec($ch);
 
     #cerrar el handler de curl
     curl_close($ch);

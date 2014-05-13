@@ -81,10 +81,10 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
-
-            if (regid.isEmpty()) {
+            
+         //   if (regid.isEmpty()) {
             	registerInBackground();
-            }
+           // }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
@@ -259,7 +259,7 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	                }
 	                regid = gcm.register(SENDER_ID);
 	                msg = "Device registered, registration ID=" + regid;
-
+	                Log.i("app",regid);
 	                // You should send the registration ID to your server over HTTP,
 	                // so it can use GCM/HTTP or CCS to send messages to your app.
 	                // The request to your server should be authenticated if your app
