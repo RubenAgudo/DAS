@@ -3,27 +3,30 @@
 $operacion =$_POST['codigo'];
 
 switch($operacion) {
-case 0:
-    echo checkIfExistsRegistration($_POST['telefono']);
-    break;
-case 1:
-    $telefono = $_POST['telefono'];
-    $regid = $_POST['regid'];
-    addRegistration($telefono, $regid);
-    break;
-case 2:
-    $cabecera = array(
-        'Authorization: key=AIzaSyDfgT87fvHf9E2Ad_wQsLEmjEkdafiHPvY',
-        'Content-type: Application/json');
-    //recogemos el mensaje que se envia
-    $data = array('my_message' => $_POST['my_message'] );
-    #llamamos siempre al mismo registration id, para ver que funciona
-    $info = array(
-        'registration_ids' => array('APA91bFidFy-ErBIKhDL86jEGq5WCTVRfP_eOCdKlN_LWeBUaw8utEIkaRYG9jtDaiMNp0VFN79TNdJ0gnE3TfLqWK0u1198NgHFhlE_5A4hhnJ0fzGyL4RvVA4ROX1Cl8B-OLuifU3CvbZ_w2tE6ySRdKLZir_yMQ'),
-        'data' => $data); 
-    peticionCurl($info, $cabecera);
-    break;
- 
+    case 0:
+        echo checkIfExistsRegistration($_POST['telefono']);
+        break;
+    case 1:
+        $imei = $_POST['IMEI'];
+        $regid = $_POST['regid'];
+        addRegistration($imei, $regid);
+        break;
+    case 2:
+        $cabecera = array(
+            'Authorization: key=AIzaSyDfgT87fvHf9E2Ad_wQsLEmjEkdafiHPvY',
+            'Content-type: Application/json');
+        //recogemos el mensaje que se envia
+        $data = array('my_message' => $_POST['my_message'] );
+        #llamamos siempre al mismo registration id, para ver que funciona
+
+        $regid = obtenerRegidDesdeIMEI($_POST['toUser']);
+        
+        $info = array(
+            'registration_ids' => array($regid),
+            'data' => $data); 
+        peticionCurl($info, $cabecera);
+        break;
+     
 }
 
 function peticionCurl($info, $cabecera) {
@@ -48,6 +51,20 @@ function peticionCurl($info, $cabecera) {
     curl_close($ch);
 }
 
+function obtenerRegidDesdeIMEI($toUser) {
+    $dbh = conectaDB();
+	$consult_registro= $dbh->prepare("SELECT regid FROM registro where usuario=:imei");
+    $consult_registro->bindParam(':imei', $toUser, PDO::PARAM_STR);
+	$consult_registro->execute();
+	$data_proximas = $consult_registro->fetch();
+	if (!empty($data_proximas)) {
+		return $data_proximas['regid'];
+	} else {
+		return null;
+	}
+
+}
+
 function conectaDB() {
     $hostname = 'localhost';
     $username = 'Xragudo001';
@@ -63,23 +80,11 @@ function conectaDB() {
     }
 }
 
-function checkIfExistsRegistration($telefono) {
-    $dbh = conectaDB();
-	$consult_registro= $dbh->prepare("SELECT regid FROM registro where telefono=:telf");
-    $consult_registro->bindParam(':telf', $telefono, PDO::PARAM_STR);
-	$consult_registro->execute();
-	$data_proximas = $consult_registro->fetch();
-	if (!empty($data_proximas)) {
-		return $data_proximas['regid'];
-	} else {
-		return null;
-	}
-}
  
-function addRegistration($telefono, $regid) {
+function addRegistration($imei, $regid) {
     $dbh = conectaDB();
-    $consult_registro=$dbh->prepare("INSERT INTO registro (telefono, regid) VALUES (:telf, :regid)");
-    $consult_registro->bindParam(':telf', $telefono, PDO::PARAM_STR);
+    $consult_registro=$dbh->prepare("INSERT INTO registro (usuario, regid) VALUES (:usu, :regid)");
+    $consult_registro->bindParam(':usu', $imei, PDO::PARAM_STR);
     $consult_registro->bindParam(':regid', $regid, PDO::PARAM_STR);
     $consult_registro->execute();
 }

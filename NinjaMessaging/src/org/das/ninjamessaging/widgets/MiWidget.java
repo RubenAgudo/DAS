@@ -1,20 +1,15 @@
 package org.das.ninjamessaging.widgets;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.fragmentactivities.MainActivity;
 import org.das.ninjamessaging.utils.LaBD;
 
-import android.app.Application;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.widget.RemoteViews;
 
 public class MiWidget extends AppWidgetProvider {

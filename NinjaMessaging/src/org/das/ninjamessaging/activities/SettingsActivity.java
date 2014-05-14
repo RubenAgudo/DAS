@@ -9,8 +9,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 
 public class SettingsActivity extends Activity {
 
@@ -41,7 +39,6 @@ public class SettingsActivity extends Activity {
 
 		@Override
 		public void onPause() {
-			// TODO Auto-generated method stub
 			super.onPause();
 			getPreferenceManager().getSharedPreferences()
 			.unregisterOnSharedPreferenceChangeListener(this);
@@ -49,7 +46,6 @@ public class SettingsActivity extends Activity {
 
 		@Override
 		public void onResume() {
-			// TODO Auto-generated method stub
 			super.onResume();
 			getPreferenceManager().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);

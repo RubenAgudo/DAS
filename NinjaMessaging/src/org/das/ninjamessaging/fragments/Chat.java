@@ -2,16 +2,10 @@ package org.das.ninjamessaging.fragments;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.das.ninjamessaging.R;
-import org.das.ninjamessaging.fragmentactivities.MainActivity;
 import org.das.ninjamessaging.utils.ConexionBD;
 import org.das.ninjamessaging.utils.LaBD;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,14 +29,11 @@ public class Chat extends Fragment {
 	private ArrayList<String> datos;
 	private ArrayAdapter<String> adaptador;
 	private String hablandoCon;
-	private Context context;
 	static final String TAG = "NinjaMessaging";
-    private AtomicInteger msgId = new AtomicInteger();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = getActivity().getApplicationContext();
 	}
 	
 	
@@ -107,7 +98,7 @@ public class Chat extends Fragment {
 				        try {
 				            
 				        	ConexionBD.getMiConexionBD(getActivity().getApplicationContext())
-				            .enviarMensaje(params[0]);
+				            .enviarMensaje(params[0], params[1]);
 				            
 				            msg = "Sent message";
 				        } catch (IOException ex) {
@@ -120,7 +111,7 @@ public class Chat extends Fragment {
 				    protected void onPostExecute(String msg) {
 				    	
 				    }
-				}.execute(mensaje.getText().toString(), null, null);
+				}.execute(mensaje.getText().toString(), hablandoCon);
 			}
 		});
 	}

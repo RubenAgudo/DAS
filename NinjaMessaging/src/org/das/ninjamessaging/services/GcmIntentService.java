@@ -2,8 +2,6 @@ package org.das.ninjamessaging.services;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.fragmentactivities.MainActivity;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 

@@ -17,12 +17,11 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ConexionBD {
@@ -35,9 +34,10 @@ public class ConexionBD {
 	private HttpClient httpclient;
 	private HttpPost httppost;
 	private HttpEntity entity;
+	private Context context;
 	
 //CONSTRUCTORA	Y GET
-	private ConexionBD() throws UnsupportedEncodingException {
+	private ConexionBD(Context context) throws UnsupportedEncodingException {
 		super();
 		parametros = new ArrayList<NameValuePair>();
 		httpParameters = new BasicHttpParams();
@@ -46,16 +46,20 @@ public class ConexionBD {
 		httpclient = new DefaultHttpClient(httpParameters);
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
 		HttpConnectionParams.setSoTimeout(httpParameters, 15000);
+		this.context = context; 
 	}
 	
 	public static ConexionBD getMiConexionBD(Context context) throws UnsupportedEncodingException {
 		if(miConexionBD == null) {
-			miConexionBD = new ConexionBD();
+			miConexionBD = new ConexionBD(context);
 		}
 		return miConexionBD;
 	}
 
 	public void registrar(String msg) {
+
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		String user = sharedPref.getString("IMEI", "");
 		new AsyncTask<String, Void, Void>() {
 
 			@Override
@@ -64,7 +68,7 @@ public class ConexionBD {
 					parametros.clear();
 					parametros.add(new BasicNameValuePair("regid", params[0]));
 					parametros.add(new BasicNameValuePair("codigo", params[1]));
-					parametros.add(new BasicNameValuePair("telefono", params[2]));
+					parametros.add(new BasicNameValuePair("IMEI", params[2]));
 					
 					httppost.setEntity(new UrlEncodedFormEntity(parametros));
 					response = httpclient.execute(httppost);
@@ -78,14 +82,16 @@ public class ConexionBD {
 				return null;
 			}
 			
-		}.execute(msg, "1", "695708693");
+		}.execute(msg, "1", user);
 		
 	}
 
-	public void enviarMensaje(String data) {
+	public void enviarMensaje(String data, String user) {
 		
 		String mensaje = data;
-		
+		String toUser = user;
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		toUser = sharedPref.getString("IMEI", "");
 		new AsyncTask<String, Void, Void>(){
 
 			@Override
@@ -95,6 +101,7 @@ public class ConexionBD {
 					parametros.clear();
 					parametros.add(new BasicNameValuePair("my_message", params[0]));
 					parametros.add(new BasicNameValuePair("codigo", params[1]));
+					parametros.add(new BasicNameValuePair("toUser", params[2]));
 					httppost.setEntity(new UrlEncodedFormEntity(parametros));
 					response = httpclient.execute(httppost);
 					entity = response.getEntity();
@@ -111,6 +118,6 @@ public class ConexionBD {
 				return null;
 			}
 			
-		}.execute(mensaje, "2");
+		}.execute(mensaje, "2", toUser);
 	}
 }

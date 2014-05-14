@@ -2,7 +2,6 @@ package org.das.ninjamessaging.fragmentactivities;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.Contacts;
@@ -19,7 +18,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
@@ -27,6 +25,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -68,6 +67,15 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 			startService(i);
 		}
 		
+		
+		TelephonyManager telemamanger = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		String deviceId = telemamanger.getDeviceId();
+		
+		//guardamos el IMEI del movil para identificar a los usuarios
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("IMEI", deviceId).commit();
+		
+		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -81,9 +89,9 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
             
-         //   if (regid.isEmpty()) {
+            if (regid.isEmpty()) {
             	registerInBackground();
-           // }
+            }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
