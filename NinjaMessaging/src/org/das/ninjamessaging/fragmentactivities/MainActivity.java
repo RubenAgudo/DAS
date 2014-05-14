@@ -49,7 +49,6 @@ public class MainActivity extends FragmentActivity implements IListFragmentListe
 	public static final String SENDER_ID = "951286565886";
 	
 	private GoogleCloudMessaging gcm;
-;
     private SharedPreferences prefs;
 	private String regid;
 	private Context context;

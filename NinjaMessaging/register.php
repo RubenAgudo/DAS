@@ -15,10 +15,12 @@ case 2:
     $cabecera = array(
         'Authorization: key=AIzaSyDfgT87fvHf9E2Ad_wQsLEmjEkdafiHPvY',
         'Content-type: Application/json');
+    //recogemos el mensaje que se envia
+    $data = array('my_message' => $_POST['my_message'] );
     #llamamos siempre al mismo registration id, para ver que funciona
     $info = array(
-        'registration_ids' => array('APA91bFn8if7-ixbf4fKDuP7LcGIMciE_0wvQUV3K00VbJQcjE1dhFD_H2_2o95e-axVk0pHUT0tV-ikh2JKcd8GqeX2OAgVJAjfCATFeQjAOnMRw4nGLSK0H9Rw9tiZbG0Xt05_8_TZ4vgnzBcIrbplDPA5HnIEBg'),
-        'data' => array('mensaje' => 'hola')); 
+        'registration_ids' => array('APA91bFidFy-ErBIKhDL86jEGq5WCTVRfP_eOCdKlN_LWeBUaw8utEIkaRYG9jtDaiMNp0VFN79TNdJ0gnE3TfLqWK0u1198NgHFhlE_5A4hhnJ0fzGyL4RvVA4ROX1Cl8B-OLuifU3CvbZ_w2tE6ySRdKLZir_yMQ'),
+        'data' => $data); 
     peticionCurl($info, $cabecera);
     break;
  
