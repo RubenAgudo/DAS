@@ -161,4 +161,34 @@ public class ConexionBD {
 		return null;
 		
 	}
+
+	public void enviarLocalizacion(double latitude, double longitude, String toUser) {
+		
+		new AsyncTask<String, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(String... params) {
+				parametros.clear();
+				parametros.add(new BasicNameValuePair("codigo", "3"));
+				parametros.add(new BasicNameValuePair("latitude", params[0]));
+				parametros.add(new BasicNameValuePair("longitude", params[1]));
+				parametros.add(new BasicNameValuePair("toUser", params[2]));
+				
+				try {
+					httppost.setEntity(new UrlEncodedFormEntity(parametros));
+					response = httpclient.execute(httppost);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				return null;
+			}
+			
+		}.execute(latitude+"", longitude+"", toUser);
+		
+	}
 }

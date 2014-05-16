@@ -1,8 +1,8 @@
 package org.das.ninjamessaging.services;
 
 import org.das.ninjamessaging.R;
-import org.das.ninjamessaging.fragmentactivities.ChatActivity;
 import org.das.ninjamessaging.fragmentactivities.MainActivity;
+import org.das.ninjamessaging.fragmentactivities.MapActivity;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -34,8 +34,8 @@ public class GcmIntentService extends IntentService {
         if (!extras.isEmpty()) {
         	if(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
         		String mensaje = extras.getString("my_message");
-        		boolean isMap = extras.getBoolean("isBoolean");
-        		sendNotification("Received: " + mensaje, isMap);
+        		boolean isMap = Boolean.parseBoolean(extras.getString("isMap"));
+        		sendNotification("Received: " + mensaje, isMap, extras);
         		
         		//se podria guardar en la bd local...
         		
@@ -48,17 +48,25 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg, boolean isMap) {
+    private void sendNotification(String msg, boolean isMap, Bundle extras) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent i;
         if(isMap) {
-        	i = new Intent
+        	msg = "Localizacion recibida";
+        	double latitude, longitude;
+        	latitude = Double.parseDouble(extras.getString("latitude"));
+        	longitude = Double.parseDouble(extras.getString("longitude"));
+        	i = new Intent(this, MapActivity.class);
+        	i.putExtra("lat", latitude);
+        	i.putExtra("long", longitude);
+        } else {
+        	i = new Intent(this, MainActivity.class);
         }
         
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                i, 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

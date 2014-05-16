@@ -31,5 +31,6 @@
     <string name="pref_service_summ">Indica si quieres usar el servicio de notificaciones</string>
     <string name="title_activity_settings">Preferencias</string>
     <string name="pref">Preferencias</string>
+    <string name="title_activity_map">Position</string>
 
 </resources>
