@@ -1,6 +1,7 @@
 package org.das.ninjamessaging.services;
 
 import org.das.ninjamessaging.R;
+import org.das.ninjamessaging.fragmentactivities.ChatActivity;
 import org.das.ninjamessaging.fragmentactivities.MainActivity;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -33,7 +34,11 @@ public class GcmIntentService extends IntentService {
         if (!extras.isEmpty()) {
         	if(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
         		String mensaje = extras.getString("my_message");
-        		sendNotification("Received: " + mensaje);    
+        		boolean isMap = extras.getBoolean("isBoolean");
+        		sendNotification("Received: " + mensaje, isMap);
+        		
+        		//se podria guardar en la bd local...
+        		
         	}
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
@@ -43,10 +48,15 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg) {
+    private void sendNotification(String msg, boolean isMap) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        Intent i;
+        if(isMap) {
+        	i = new Intent
+        }
+        
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
 

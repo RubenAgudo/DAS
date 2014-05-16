@@ -1,11 +1,14 @@
 package org.das.ninjamessaging.activities;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.fragmentactivities.ChatActivity;
+import org.das.ninjamessaging.utils.ConexionBD;
 import org.das.ninjamessaging.utils.LaBD;
-
+import org.json.JSONArray;
+import org.json.JSONException;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -97,20 +100,21 @@ public class Contacts extends Activity {
 		private void updateList() {
 			
 			adaptador.clear();
-			Cursor aCursor = LaBD.getMiBD(getActivity()).getUsers();
-			
-			String nombre;
-			
-			if(aCursor.moveToFirst()) {
+			JSONArray data;
+			try {
+				data = ConexionBD.getMiConexionBD(getActivity().getApplicationContext()).getUsers();
+				String nombre;
 				
-				do {
-					
-					nombre = aCursor.getString(0);
+				for(int i = 0; i < data.length(); i++) {
+					nombre = data.getJSONObject(i).getString("usuario");
 					datos.add(nombre);
-					
-				} while(aCursor.moveToNext());
-				
+				}
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
+			
 			
 		}
 	}

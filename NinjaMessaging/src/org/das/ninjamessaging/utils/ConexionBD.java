@@ -3,10 +3,12 @@ package org.das.ninjamessaging.utils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -17,6 +19,8 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -90,8 +94,6 @@ public class ConexionBD {
 		
 		String mensaje = data;
 		String toUser = user;
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-		toUser = sharedPref.getString("IMEI", "");
 		new AsyncTask<String, Void, Void>(){
 
 			@Override
@@ -119,5 +121,44 @@ public class ConexionBD {
 			}
 			
 		}.execute(mensaje, "2", toUser);
+	}
+
+	public JSONArray getUsers() {
+		
+		try {
+			return new AsyncTask<Void, Void, JSONArray>() {
+				JSONArray data;
+				@Override
+				protected JSONArray doInBackground(Void... arg0) {
+					parametros.clear();
+					parametros.add(new BasicNameValuePair("codigo", "0"));
+					try {
+						httppost.setEntity(new UrlEncodedFormEntity(parametros));
+						response = httpclient.execute(httppost);
+						entity = response.getEntity();
+						String result = EntityUtils.toString(entity);
+						data = new JSONArray(result);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					} catch (ParseException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					return data;
+				}
+				
+			}.execute(null, null, null).get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 }
