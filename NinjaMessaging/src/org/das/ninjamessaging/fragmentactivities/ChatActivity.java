@@ -1,12 +1,14 @@
 package org.das.ninjamessaging.fragmentactivities;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Locale;
 
 import org.das.ninjamessaging.R;
 import org.das.ninjamessaging.activities.DetallesUsuario;
 import org.das.ninjamessaging.fragments.Chat;
+import org.das.ninjamessaging.utils.ConexionBD;
 import org.das.ninjamessaging.utils.LaBD;
 
 import android.app.ActionBar;
@@ -84,6 +86,7 @@ public class ChatActivity extends FragmentActivity {
         } else {
 	        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 	        LaBD.getMiBD(getApplicationContext()).anadirMensaje(user, message, 1);
+	        
 	        Chat chat = (Chat) getSupportFragmentManager().findFragmentById(R.id.chat);
 	        chat.updateList(user);
         }
@@ -129,6 +132,15 @@ public class ChatActivity extends FragmentActivity {
             }
         } catch (IOException e) {
             result = "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude();
+            
+        } finally {
+        	try {
+				ConexionBD.getMiConexionBD(getApplicationContext()).
+				enviarLocalizacion(location.getLatitude(), location.getLongitude(), user);
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         }
         
         return result;
