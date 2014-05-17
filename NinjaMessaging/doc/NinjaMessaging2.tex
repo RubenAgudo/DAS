@@ -1,0 +1,81 @@
+\documentclass[]{article}
+\usepackage[spanish]{babel}
+
+%opening
+\title{NinjaMessaging 2}
+\author{Rub\'en Agudo Santos}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+En la segunda versi\'on de NinjaMessaging se ha trabajado con notificaciones push, bases de datos remotas, preferencias,
+widgets y mapas. En las subsecuentes secciones se explicar\'a detalladamente que se ha hecho.
+\end{abstract}
+
+\section{Funcionalidades obligatorias}
+Aqu\'i se presentar\'an las funcionalidades m\'inimas para obtener un 5.
+\subsection{Notificaciones push}
+Las notificaciones push solo van a funcionar cuando desde la pantalla principal se pinche en el ``+" verde en la esquina
+superior derecha. Al pinchar ah\'i se mostrar\'an todos los n\'umeros IMEI registrados. Es decir, no existe el concepto de amistad,
+m\'as bien podr\'ia considerarse una sala de chat m\'ovil, en la que una vez te has registrado, ya no hay manera de darse de baja.
+
+Una vez seleccionada una conversaci\'on (tambi\'en aparece tu propio dispositivo por motivos de testeo) puedes escribir lo que
+sea, y llegar\'a una notificaci\'on push al dispositivo que est\'es escribiendo. La notificaci\'on, si es de texto plano, al 
+pinchar sobre ella te llevar\'a a la pantalla principal, y NO se mostrar\'a el texto que te ha escrito, ese texto solo ser\'a
+visible a trav\'es de la propia notificaci\'on.
+
+Tambi\'en se ha usado la clase SharedPreferences para guardar el \emph{regid} actual. Idealmente, habr\'ia que crear un mecanismo 
+en el cual si Google cambia el \emph{regid} a tu dispositivo pueda actualizarse autom\'aticamente. Lo mas sencillo ser\'ia cambiar
+la versi\'on de la aplicaci\'on, y en la base de datos remota, en la tabla registro, guardar como clave primaria el usuario y
+la versi\'on de la aplicaci\'on.
+
+\subsection{Bases de datos remotas}
+La base de datos remota consiste \'unicamente de una tabla que se compone de dos campos, usuario, que es el IMEI del dispositivo
+m\'ovil y el regid, que es el registration id proporcionado por google.
+
+Esa tabla se utiliza para poder enviar mensajes push a trav\'es de GCM y curl
+
+Los datos que se obtienen son unicamente los IMEI, que se muestran en la pantalla de Contacts. Es una simple \emph{SELECT}
+para mostrar todos los usuarios del sistema.
+
+La \emph{INSERT} que se realiza, es para guardar los usuarios registrados, con su numero IMEI + regid.
+
+\subsection{Widgets}
+Se ha creado un widget muy sencillo, con una actividad de configuraci\'on, que al lanzarlo, debes introducir el nombre del usuario
+del que quieres ver el \'ultimo mensaje.
+
+Una vez has puesto el usuario, se mostrar\'a autom\'aticamente el \'ultimo mensaje de esa conversaci\'on, ya sea tuyo o suyo. El
+Widget contiene un bot\'on que te permite actualizar el widget y comprobar si el \'ultimo mensaje ha cambiado.
+
+\section{Funcionalidades optativas}
+Aqu\'i se presentar\'an las funcionalidades que se utilizan para subir la nota del proyecto.
+
+\subsection{Preferencias}
+En el documento donde se especificaban los requisitos m\'inimos, se planteaba el uso de preferencias que tuviesen alg\'un tipo
+de efecto en el funcionamiento del programa.
+
+En mi caso se ha decidido que las preferencias tengan un \emph{checkbox} que inicia o detiene el servicio que notifica cada
+15 segundos de que tienes un nuevo mensaje. Como el cambio ha de hacerse de manera instant\'anea y el \emph{polling} no
+merece la pena, se ha decidido implementar la interfaz \emph{OnSharedPreferenceChangeListener} que contiene el m\'etodo
+\emph{onSharedPreferenceChanged(SharedPreferences sp, String key)} en el que te indica que clave ha cambiado, para que se
+pueda actuar en consecuencia.
+
+Tambi\'en es importante comentar que se ha utilizado un \emph{PreferenceFragment} embebido dentro de una \emph{Activity}
+normal, tal y como recomienda Google.
+
+Para acceder a las preferencias, se hace desde la pantalla principal, dando al men\'u de opciones, y pinchando en preferencias.
+
+\subsection{Mapas}
+Tambi\'en se han implementado los mapas de google, para enviar a un contacto nuestra \'ultima posici\'on conocida. Para ello se ha
+adaptado el laboratorio 7. 
+
+Para conseguir el efecto de enviar la localizaci\'on, lo que se ha hecho es que a trav\'es de GCM
+se env\'ian distintos datos, entre ellos un flag \emph{isMap} en el que si es una localizaci\'on, el intent de la 
+notificaci\'on te lleva a la actividad del mapa, centrandose en la posici\'on enviada y a\~nadiendo un marker para darle
+mayor vistosidad al conjunto. 
+
+La \'unica manera de entrar al mapa es recibiendo una notificaci\'on de mapa.
+
+\end{document}
